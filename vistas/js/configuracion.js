@@ -1,8 +1,8 @@
 /*=============================================
-SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DE HOMBRE
+SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DEL LOGO
 =============================================*/
 
-$(".fotoHombre").change(function(){
+$(".fotologo").change(function(){
 	var imagen = this.files[0];
 	
 	/*=============================================
@@ -11,7 +11,7 @@ $(".fotoHombre").change(function(){
 
   	if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
 
-  		$(".fotoHombre").val("");
+  		$(".fotologo").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
@@ -22,7 +22,7 @@ $(".fotoHombre").change(function(){
 
   	}else if(imagen["size"] > 2000000){
 
-  		$(".fotoHombre").val("");
+  		$(".fotologo").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
@@ -40,7 +40,7 @@ $(".fotoHombre").change(function(){
 
   			var rutaImagen = event.target.result;
 
-  			$(".previsualizarHombre").attr("src", rutaImagen);
+  			$(".previsualizarlogo").attr("src", rutaImagen);
 
   		});
 
@@ -48,30 +48,30 @@ $(".fotoHombre").change(function(){
 });
 
 /*=============================================
-SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DE MUJER
+SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DEL ICONO
 =============================================*/
 
-$(".fotoMujer").change(function(){
+$(".fotologoicon").change(function(){
 	var imagen = this.files[0];
 	
 	/*=============================================
   	VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
   	=============================================*/
-
-  	if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+	console.log(imagen["type"]);
+  	if(imagen["type"] != "image/x-icon"){
 
   		$(".fotoMujer").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
-		      text: "¡La imagen debe estar en formato JPG o PNG!",
+		      text: "¡La imagen debe estar en formato ICON!",
 		      icon: "error",
 		      confirmButtonText: "¡Cerrar!"
 		    });
 
   	}else if(imagen["size"] > 2000000){
 
-  		$(".fotoMujer").val("");
+  		$(".fotologoicon").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
@@ -89,7 +89,7 @@ $(".fotoMujer").change(function(){
 
   			var rutaImagen = event.target.result;
 
-  			$(".previsualizarMujer").attr("src", rutaImagen);
+  			$(".previsualizarIcono").attr("src", rutaImagen);
 
   		});
 
@@ -98,10 +98,10 @@ $(".fotoMujer").change(function(){
 
 
 /*=============================================
-SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DE INFANTE
+SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DEL BANNER
 =============================================*/
 
-$(".fotoInfante").change(function(){
+$(".fotoBanner").change(function(){
 	var imagen = this.files[0];
 	
 	/*=============================================
@@ -110,7 +110,7 @@ $(".fotoInfante").change(function(){
 
   	if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
 
-  		$(".fotoInfante").val("");
+  		$(".fotoBanner").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
@@ -121,7 +121,7 @@ $(".fotoInfante").change(function(){
 
   	}else if(imagen["size"] > 2000000){
 
-  		$(".fotoInfante").val("");
+  		$(".fotoBanner").val("");
 
   		 Swal.fire({
 		      title: "Error al subir la imagen",
@@ -139,58 +139,11 @@ $(".fotoInfante").change(function(){
 
   			var rutaImagen = event.target.result;
 
-  			$(".previsualizarInfante").attr("src", rutaImagen);
+  			$(".previsualizarBanner").attr("src", rutaImagen);
 
   		});
 
   	}
 });
 
-/*=============================================
-SUBIENDO LA FOTO DEL CONFIGURACIÓN FOTO DE Personalizado
-=============================================*/
 
-$(".fotoInPersonalizado").change(function(){
-	var imagen = this.files[0];
-	
-	/*=============================================
-  	VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
-  	=============================================*/
-
-  	if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
-
-  		$(".fotoInPersonalizado").val("");
-
-  		 Swal.fire({
-		      title: "Error al subir la imagen",
-		      text: "¡La imagen debe estar en formato JPG o PNG!",
-		      icon: "error",
-		      confirmButtonText: "¡Cerrar!"
-		    });
-
-  	}else if(imagen["size"] > 2000000){
-
-  		$(".fotoInPersonalizado").val("");
-
-  		 Swal.fire({
-		      title: "Error al subir la imagen",
-		      text: "¡La imagen no debe pesar más de 2MB!",
-		      icon: "error",
-		      confirmButtonText: "¡Cerrar!"
-		    });
-
-  	}else{
-
-  		var datosImagen = new FileReader;
-  		datosImagen.readAsDataURL(imagen);
-
-  		$(datosImagen).on("load", function(event){
-
-  			var rutaImagen = event.target.result;
-
-  			$(".previsualizarPersonalizado").attr("src", rutaImagen);
-
-  		});
-
-  	}
-});

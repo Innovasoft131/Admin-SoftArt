@@ -15,8 +15,17 @@ class ControladorConfiguracion{
 	}
 
 	/*=============================================
-	MOSTRAR CONFIGURACIÓN DE PÁGINA DE INICIO 
+	MOSTRAR CONFIGURACIÓN DE PÁGINA 
 	=============================================*/
+
+	static public function ctrMostrarConfig($item, $valor){
+
+		$tabla = "configTienda";
+
+		$respuesta = ModeloConfiguracion::MdlMostrarConfig($tabla, $item, $valor);
+	
+		return $respuesta;
+	}
 
 	static public function ctrMostrarConfigInicio($item, $valor){
 
@@ -47,7 +56,7 @@ class ControladorConfiguracion{
                                "instagram" => $_POST["nuevoConfigInstagram"],
 					           "idUsuario" => $_SESSION["id"],
 							   "id" => $_POST["nuevoConfigId"],
-							   "passwordEmail" => $_POST["nuevoConfigPassword"]);
+							   "facebook" => $_POST["nuevoConfigfacebook"]);
 				
 				$respuesta = ModeloConfiguracion::mdlEditarConfigRedes($tabla, $datos);
 
@@ -117,49 +126,45 @@ class ControladorConfiguracion{
 
 
 	/*=============================================
-	ACTUALIZAR CONFIGURACIÓN DE PAGINA DE INICIO
+	ACTUALIZAR CONFIGURACIÓN DE PAGINA 
 	=============================================*/
 
-	static public function ctrEditaConfigInicio(){
+	static public function ctrEditaConfigPagina(){
 	
-		if(isset($_POST["nuevoConfigInicioId"])){
+		if(isset($_POST["nombreEmpresa"])){
 			
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nuevoTituloSlogan"]) &&
-			preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nuevoConfigslogan"]) &&
-			preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nuevoConfigTitPers"]) &&
-			preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nuevoConfigsubTitPers"]) &&
-			preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nuevoConfigPers"])){
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["nombreEmpresa"])){
 				
 				/*=============================================
-				VALIDAR IMAGEN HOMBRE
+				VALIDAR logo
 				=============================================*/
 
-				$rutaHombre = $_POST["fotoActualHombre"];
+				$rutaLogo = $_POST["fotoActuallogo"];
 				
-				if(isset($_FILES["fotoHombre"]["tmp_name"]) && !empty($_FILES["fotoHombre"]["tmp_name"])){
+				if(isset($_FILES["fotologo"]["tmp_name"]) && !empty($_FILES["fotologo"]["tmp_name"])){
 					
-					list($ancho, $alto) = getimagesize($_FILES["fotoHombre"]["tmp_name"]);
+					list($ancho, $alto) = getimagesize($_FILES["fotologo"]["tmp_name"]);
 
 					$nuevoAncho = 800;
 					$nuevoAlto = 800;
 
 					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL HOMBRES
+					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL LOGO
 					=============================================*/
 
-					$directorioHombre = "vistas/img/plantilla/hombre";
+					$directorioLogo = "vistas/img/plantilla/logo";
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
 					=============================================*/
 
-					if(!empty($_POST["fotoActualHombre"])){
+					if(!empty($_POST["fotoActuallogo"])){
 
-						unlink($_POST["fotoActualHombre"]);
+						unlink($_POST["fotoActuallogo"]);
 
 					}else{
 
-						mkdir($directorioHombre, 0755);
+						mkdir($directorioLogo, 0755);
 
 					}	
 
@@ -167,7 +172,7 @@ class ControladorConfiguracion{
 					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
 					=============================================*/
 
-					if($_FILES["fotoHombre"]["type"] == "image/jpeg"){
+					if($_FILES["fotologo"]["type"] == "image/jpeg"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
@@ -175,19 +180,19 @@ class ControladorConfiguracion{
 
 						$aleatorio = mt_rand(100,999);
 
-						$rutaHombre = "vistas/img/plantilla/hombre/".$aleatorio.".jpg";
+						$rutaLogo = "vistas/img/plantilla/logo/".$aleatorio.".jpg";
 
-						$origen = imagecreatefromjpeg($_FILES["fotoHombre"]["tmp_name"]);						
+						$origen = imagecreatefromjpeg($_FILES["fotologo"]["tmp_name"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
 						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-						imagejpeg($destino, $rutaHombre);
+						imagejpeg($destino, $rutaLogo);
 
 					}
 
-					if($_FILES["fotoHombre"]["type"] == "image/png"){
+					if($_FILES["fotologo"]["type"] == "image/png"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
@@ -195,46 +200,46 @@ class ControladorConfiguracion{
 
 						$aleatorio = mt_rand(100,999);
 
-						$rutaHombre = "vistas/img/plantilla/hombre/".$aleatorio.".jpg";
+						$rutaLogo = "vistas/img/plantilla/logo/".$aleatorio.".jpg";
 
-						$origen = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);						
+						$origen = imagecreatefrompng($_FILES["fotologo"]["tmp_name"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
 						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-						imagepng($destino, $rutaHombre);
+						imagepng($destino, $rutaLogo);
 
 					}
 
 				}
 
 				/*=============================================
-				VALIDAR IMAGEN MUJER
+				VALIDAR IMAGEN Icono
 				=============================================*/
 
-				$rutaMujer = $_POST["fotoActualMujer"];
+				$rutaIcono = $_POST["fotoActuallogoicon"];
 
-				if(isset($_FILES["fotoMujer"]["tmp_name"]) && !empty($_FILES["fotoMujer"]["tmp_name"])){
+				if(isset($_FILES["fotologoicon"]["tmp_name"]) && !empty($_FILES["fotologoicon"]["tmp_name"])){
 
-					list($ancho, $alto) = getimagesize($_FILES["fotoMujer"]["tmp_name"]);
+					list($ancho, $alto) = getimagesize($_FILES["fotologoicon"]["tmp_name"]);
 
 					$nuevoAncho = 500;
 					$nuevoAlto = 500;
 
 					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
+					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL ICONO
 					=============================================*/
 
-					$directorioMujer = "vistas/img/plantilla/mujer";
+					$directorioIcono = "vistas/img/plantilla/icono";
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
 					=============================================*/
 
-					if(!empty($_POST["fotoActualMujer"])){
+					if(!empty($_POST["fotoActuallogoicon"])){
 
-						unlink($_POST["fotoActualMujer"]);
+					//	unlink($_POST["fotoActuallogoicon"]);
 
 					}else{
 
@@ -246,7 +251,7 @@ class ControladorConfiguracion{
 					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
 					=============================================*/
 
-					if($_FILES["fotoMujer"]["type"] == "image/jpeg"){
+					if($_FILES["fotologoicon"]["type"] == "image/x-icon"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
@@ -254,216 +259,44 @@ class ControladorConfiguracion{
 
 						$aleatorio = mt_rand(100,999);
 
-						$rutaMujer = "vistas/img/plantilla/mujer/".$aleatorio.".jpg";
+						$rutaIconoM = "vistas/img/plantilla/icono/".$_FILES["fotologoicon"]["name"];
 
-						$origen = imagecreatefromjpeg($_FILES["fotoMujer"]["tmp_name"]);						
+						if(move_uploaded_file($_FILES["fotologoicon"]["tmp_name"], $rutaIconoM)){
+							$rutaIcono = "vistas/img/plantilla/icono/".$_FILES["fotologoicon"]["name"];
+						}
 
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagejpeg($destino, $rutaMujer);
+						
 
 					}
 
-					if($_FILES["fotoMujer"]["type"] == "image/png"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$rutaMujer = "vistas/plantilla/mujer/".$aleatorio.".png";
-
-						$origen = imagecreatefrompng($_FILES["fotoMujer"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagepng($destino, $rutaMujer);
-
-					}
+				
 
 				}
 
 
-				/*=============================================
-				VALIDAR IMAGEN INFANTE
-				=============================================*/
 
-				$rutaInfante = $_POST["fotoActualInfante"];
+	
 
-				if(isset($_FILES["fotoInfante"]["tmp_name"]) && !empty($_FILES["fotoInfante"]["tmp_name"])){
+				$tabla = "configTienda";
 
-					list($ancho, $alto) = getimagesize($_FILES["fotoInfante"]["tmp_name"]);
 
-					$nuevoAncho = 500;
-					$nuevoAlto = 500;
 
-					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
-					=============================================*/
-
-					$directorioInfante = "vistas/img/plantilla/infante";
-
-					/*=============================================
-					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
-					=============================================*/
-
-					if(!empty($_POST["fotoActualInfante"])){
-
-						unlink($_POST["fotoActualInfante"]);
-
-					}else{
-
-						mkdir($directorio, 0755);
-
-					}	
-
-					/*=============================================
-					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
-					=============================================*/
-
-					if($_FILES["fotoInfante"]["type"] == "image/jpeg"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$rutaInfante = "vistas/img/plantilla/infante/".$aleatorio.".jpg";
-
-						$origen = imagecreatefromjpeg($_FILES["fotoInfante"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagejpeg($destino, $rutaInfante);
-
-					}
-
-					if($_FILES["fotoInfante"]["type"] == "image/png"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$rutaInfante = "vistas/img/plantilla/infante/".$aleatorio.".jpg";
-
-						$origen = imagecreatefrompng($_FILES["fotoInfante"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagepng($destino, $rutaInfante);
-
-					}
-
-				}
-
-				/*=============================================
-				VALIDAR IMAGEN Personalizado
-				=============================================*/
-
-				$rutaPersonalizado = $_POST["fotoActualPersonalizado"];
-
-				if(isset($_FILES["fotoInPersonalizado"]["tmp_name"]) && !empty($_FILES["fotoInPersonalizado"]["tmp_name"])){
-
-					list($ancho, $alto) = getimagesize($_FILES["fotoInPersonalizado"]["tmp_name"]);
-
-					$nuevoAncho = 500;
-					$nuevoAlto = 500;
-
-					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
-					=============================================*/
-
-					$directorioPersonalizado = "vistas/img/plantilla/personalizado";
-
-					/*=============================================
-					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
-					=============================================*/
-
-					if(!empty($_POST["fotoActualPersonalizado"])){
-
-						unlink($_POST["fotoActualPersonalizado"]);
-
-					}else{
-
-						mkdir($directorio, 0755);
-
-					}	
-
-					/*=============================================
-					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
-					=============================================*/
-
-					if($_FILES["fotoInPersonalizado"]["type"] == "image/jpeg"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$rutaPersonalizado = "vistas/img/plantilla/personalizado/".$aleatorio.".jpg";
-
-						$origen = imagecreatefromjpeg($_FILES["fotoInPersonalizado"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagejpeg($destino, $rutaPersonalizado);
-
-					}
-
-					if($_FILES["fotoInPersonalizado"]["type"] == "image/png"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$rutaPersonalizado = "vistas/img/plantilla/personalizado/".$aleatorio.".jpg";
-
-						$origen = imagecreatefrompng($_FILES["fotoInPersonalizado"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagepng($destino, $rutaPersonalizado);
-
-					}
-
-				}
-
-				$tabla = "configInicio";
-
-
-
-				$datos = array("tituloSlogan" => $_POST["nuevoTituloSlogan"],
-							   "slogan" => $_POST["nuevoConfigslogan"],
-							   "id" => $_POST["nuevoConfigInicioId"],
-							   "imgHombre" => $rutaHombre,
-							   "imgMujer" => $rutaMujer,
-							   "imgInfante" => $rutaInfante,
-							   "tituloPers" => $_POST["nuevoConfigTitPers"],
-							   "subTituloPers" => $_POST["nuevoConfigsubTitPers"],
-							   "textoPers" => $_POST["nuevoConfigPers"],
-							   "imgPers" => $rutaPersonalizado,
+				$datos = array("id" => $_POST["idConfig"],
+							   "logo" => $rutaLogo,
+							   "logoIcon" => $rutaIcono,
+							   "tamanioLogoMenu" => $_POST["tamanioLogoMenu"],
+							   "tamanioLogoPie" => $_POST["tamanioLogoPie"],
+							   "nombreTienda" => $_POST["nombreEmpresa"],
+							   "colorCorporativo" => $_POST["colorCorporativo"],
+							   "colorTexto" => $_POST["colorTexto"],
+							   "colorPie" => $_POST["colorPie"],
+							   "colorTextoPie" => $_POST["colorTextoPie"],
+							   "colorMenu" => $_POST["colorMenu"],
+							   "colorTextoMenu" => $_POST["colorTextoMenu"],
+							   "direccion" => $_POST["direccion"],
 							   "idUsuario" => $_SESSION["id"]);
 
-				$respuesta = ModeloConfiguracion::mdlEditarConfigInicio($tabla, $datos);
+				$respuesta = ModeloConfiguracion::mdlEditarConfig($tabla, $datos);
 
 				if($respuesta == "ok"){
 
@@ -511,4 +344,169 @@ class ControladorConfiguracion{
 		}
 
 	}
+
+
+	/*=============================================
+	ACTUALIZAR CONFIGURACIÓN DE PAGINA  INICIO
+	=============================================*/
+
+	static public function ctrEditaConfigInicio(){
+		
+		if(isset($_POST["fotoActualbanner"])){
+			
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,!¡¿?\r\n ]+$/', $_POST["tamanioSlogan"])){
+				
+				/*=============================================
+				VALIDAR banner
+				=============================================*/
+
+				$rutaBanner = $_POST["fotoActualbanner"];
+				
+				if(isset($_FILES["fotoBanner"]["tmp_name"]) && !empty($_FILES["fotoBanner"]["tmp_name"])){
+					
+					list($ancho, $alto) = getimagesize($_FILES["fotoBanner"]["tmp_name"]);
+
+					$nuevoAncho = 1680;
+					$nuevoAlto = 800;
+
+					/*=============================================
+					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL LOGO
+					=============================================*/
+
+					$directorioBanner = "vistas/img/plantilla/banner";
+
+					/*=============================================
+					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
+					=============================================*/
+
+					if(!empty($_POST["fotoActualbanner"])){
+
+					//	unlink($_POST["fotoActualbanner"]);
+
+					}else{
+
+						mkdir($directorioLogo, 0755);
+
+					}	
+
+					/*=============================================
+					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+					=============================================*/
+
+					if($_FILES["fotoBanner"]["type"] == "image/jpeg"){
+
+						/*=============================================
+						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+						=============================================*/
+
+						$aleatorio = mt_rand(100,999);
+
+						$rutaBanner = "vistas/img/plantilla/banner/".$aleatorio.".jpg";
+
+						$origen = imagecreatefromjpeg($_FILES["fotoBanner"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagejpeg($destino, $rutaBanner);
+
+					}
+
+					if($_FILES["fotoBanner"]["type"] == "image/png"){
+
+						/*=============================================
+						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+						=============================================*/
+
+						$aleatorio = mt_rand(100,999);
+
+						$rutaBanner = "vistas/img/plantilla/banner/".$aleatorio.".jpg";
+
+						$origen = imagecreatefrompng($_FILES["fotoBanner"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagepng($destino, $rutaBanner);
+
+					}
+
+				}
+
+
+
+
+	
+
+				$tabla = "configInicio";
+
+
+
+				$datos = array("id" => $_POST["idConfigInicio"],
+							   "slogan" => $_POST["slogan"],
+							   "colorSlogan" => $_POST["colorSlogan"],
+							   "colorSpan" => $_POST["colorSpan"],
+							   "tamanioSlogan" => $_POST["tamanioSlogan"],
+							   "img" => $rutaBanner,
+							   "parrafoSlogan" => $_POST["nuevoConfigslogan"],
+							   "colorParrafo" => $_POST["colorParrafo"],
+							   "tamanioParrafo" => $_POST["tamanioParrafo"],
+							   "idUsuario" => $_SESSION["id"]);
+
+				$respuesta = ModeloConfiguracion::mdlEditarConfigInicio($tabla, $datos);
+
+				
+
+				if($respuesta == "ok"){
+					
+					echo'<script>
+
+					Swal.fire({
+						  icon: "success",
+						  title: "La Configuración ha sido editada correctamente",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+
+									window.location = "configInicio";
+
+									}
+								})
+
+					</script>';
+					
+
+				}
+
+
+			}else{
+				
+				echo'<script>
+
+				Swal.fire({
+						  icon: "error",
+						  title: "¡En la Configuración no pueden atributos ir vacíos o llevar caracteres especiales!",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+							if (result.value) {
+
+							window.location = "configInicio";
+
+							}
+						})
+
+			  	</script>';
+				  
+
+			}
+
+		}
+
+	}
+
+
 }

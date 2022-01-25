@@ -63,11 +63,11 @@
                         </div>
                     </div>
 
-                    <!-- Entrada de Contraseña de correo -->
+                    <!-- Entrada de email -->
                     <div class="input-group mb-3">
                         <div class="form-group col-md-12">   
-                            <label for="nuevoConfigPassword">Contraseña de correo:</label> &nbsp;
-                            <input type="password" class="form-control" name="nuevoConfigPassword" id="nuevoConfigPassword" placeholder="Contraseña de correo" value="<?php echo $mostrarConfigRedes[0]["passwordEmail"] ?>">
+                            <label for="nuevoConfigfacebook">facebook:</label> &nbsp;
+                            <input type="text" class="form-control" name="nuevoConfigfacebook" id="nuevoConfigfacebook" placeholder="facebook" value="<?php echo $mostrarConfigRedes[0]["facebook"] ?>">
                             
                         </div>
                     </div>

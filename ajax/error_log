@@ -1,0 +1,2 @@
+[11-May-2021 18:20:04 America/Mexico_City] PHP Deprecated:  Non-static method Conexion::conectar() should not be called statically in /home2/systems3/admin.ferxostyle.com.mx/modelos/usuarios.modelo.php on line 107
+[11-May-2021 18:20:05 America/Mexico_City] PHP Deprecated:  Non-static method Conexion::conectar() should not be called statically in /home2/systems3/admin.ferxostyle.com.mx/modelos/usuarios.modelo.php on line 107

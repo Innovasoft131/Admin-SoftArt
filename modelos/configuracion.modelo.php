@@ -75,7 +75,7 @@ class ModeloConfiguracion{
 
 	static public function mdlEditarConfig($tabla, $datos){
 	
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET logo = :logo, logoIcon = :logoIcon, tamanioLogoMenu = :tamanioLogoMenu, tamanioLogoPie = :tamanioLogoPie, nombreTienda = :nombreTienda, colorCorporativo = :colorCorporativo, colorTexto = :colorTexto, colorPie = :colorPie, colorTextoPie = :colorTextoPie, colorMenu = :colorMenu, colorTextoMenu = :colorTextoMenu, direccion = :direccion, idUsuario = :idUsuario WHERE id = :id");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET logo = :logo, logoIcon = :logoIcon, logoPie = :logoPie, tamanioLogoMenu = :tamanioLogoMenu, tamanioLogoPie = :tamanioLogoPie, nombreTienda = :nombreTienda, tamanioNombre = :tamanioNombre, colorCorporativo = :colorCorporativo, colorTexto = :colorTexto, colorPie = :colorPie, colorTextoPie = :colorTextoPie, colorMenu = :colorMenu, colorTextoMenu = :colorTextoMenu, direccion = :direccion, idUsuario = :idUsuario WHERE id = :id");
 
 		$stmt->bindParam(":logo", $datos["logo"], PDO::PARAM_STR);
         $stmt->bindParam(":logoIcon", $datos["logoIcon"], PDO::PARAM_STR);
@@ -90,6 +90,8 @@ class ModeloConfiguracion{
         $stmt->bindParam(":colorTextoMenu", $datos["colorTextoMenu"], PDO::PARAM_STR);
 		$stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
 		$stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_STR);
+		$stmt->bindParam(":tamanioNombre", $datos["tamanioNombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":logoPie", $datos["logoPie"], PDO::PARAM_STR);
 		$stmt->bindParam(":id", $datos["id"], PDO::PARAM_STR);
 
 

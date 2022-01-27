@@ -61,7 +61,7 @@
                     <!-- Entrada de logos -->
                     <div class="form-group">
                         <div class="row"> 
-                          <div class="col-6">
+                          <div class="col-4">
                             <label for="fotoActuallogo">Subir Foto del logo</label> <br>
                             <input type="file" name="fotologo" id="fotologo" class="fotologo">
                             <p class="help-block">Peso máximo de la foto 200 MB</p>
@@ -69,7 +69,7 @@
                             <input type="hidden" name="fotoActuallogo" id="fotoActuallogo" value="<?php echo $mostrarConfigInicio[0]["logo"] ?>">  
                           </div>  
 
-                          <div class="col-6">
+                          <div class="col-4">
                             <label for="fotoActuallogoicon">Subir icono del logo</label> <br>
                             <input type="file" name="fotologoicon" id="fotologoicon" class="fotologoicon">
                             <p class="help-block">
@@ -78,6 +78,16 @@
                             <img src="<?php echo $mostrarConfigInicio[0]["logoIcon"] ?>" class="img-thumbnail previsualizarIcono" width="100px">
                             <input type="hidden" name="fotoActuallogoicon" id="fotoActuallogoicon" value="<?php echo $mostrarConfigInicio[0]["logoIcon"] ?>">  
                           </div>  
+
+                          <div class="col-4">
+                            <label for="fotoActuallogoicon">Subir Foto del logo para pie de pagina</label> <br>
+                            <input type="file" name="fotologopie" id="fotologopie" class="fotologopie">
+                            <p class="help-block">
+                              Peso máximo de la foto 200 MB
+                            </p>
+                            <img src="<?php echo $mostrarConfigInicio[0]["logoIcon"] ?>" class="img-thumbnail previsualizarpie" width="100px">
+                            <input type="hidden" name="fotoActuallogopie" id="fotoActuallogopie" value="<?php echo $mostrarConfigInicio[0]["logoPie"] ?>">  
+                          </div> 
                             
                         </div>
                     </div>
@@ -87,14 +97,18 @@
                     <!-- Entrada del tamaño del logo en menu y pie de pagina -->
                     <div class="form-group">
                         <div class="row">  
-                            <div class="col-6">
+                            <div class="col-4">
                               <label for="tamanioLogoMenu">Tamaño del logo en Menú:</label> &nbsp;
                               <input type="number" min="0" step="0.1" class="form-control" name="tamanioLogoMenu" id="tamanioLogoMenu" value="<?php echo $mostrarConfigInicio[0]["tamanioLogoMenu"] ?>">
 
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                               <label for="tamanioLogoPie">Tamaño del logo en pie de pagina:</label> &nbsp;
                               <input type="number" min="0" step="0.1" class="form-control" name="tamanioLogoPie" id="tamanioLogoPie" value="<?php echo $mostrarConfigInicio[0]["tamanioLogoPie"] ?>">
+                            </div> 
+                            <div class="col-4">
+                              <label for="tamanioNombre">Tamaño del nombre de la empresa:</label> &nbsp;
+                              <input type="number" min="0" step="0.1" class="form-control" name="tamanioNombre" id="tamanioNombre" value="<?php echo $mostrarConfigInicio[0]["tamanioNombre"] ?>">
                             </div> 
 
                             
@@ -194,7 +208,7 @@
                      <!-- entrada de colores del slogan -->
                      <div class="form-group">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-3" hidden>
                                 <label for="colorSpan">Color en palabra de slogan:</label> <br>
                                 <input type="color" title="Color en palabra de slogan" class="btnColor" name="colorSpan" id="colorSpan" value="<?php echo $mostrarConfigInicio[0]["colorSpan"] ?>">             
                             </div>

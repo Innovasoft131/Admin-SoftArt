@@ -160,7 +160,7 @@ class ControladorConfiguracion{
 
 					if(!empty($_POST["fotoActuallogo"])){
 
-						unlink($_POST["fotoActuallogo"]);
+					//	unlink($_POST["fotoActuallogo"]);
 
 					}else{
 
@@ -273,6 +273,85 @@ class ControladorConfiguracion{
 
 				}
 
+				/*=============================================
+				VALIDAR LOGO PARA PIE DE PAGINA
+				=============================================*/
+
+				$rutaLogoPie = $_POST["fotoActuallogopie"];
+				
+				if(isset($_FILES["fotologopie"]["tmp_name"]) && !empty($_FILES["fotologopie"]["tmp_name"])){
+					
+					list($ancho, $alto) = getimagesize($_FILES["fotologopie"]["tmp_name"]);
+
+					$nuevoAncho = 800;
+					$nuevoAlto = 800;
+
+					/*=============================================
+					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL LOGO
+					=============================================*/
+
+					$directorioLogoPie = "vistas/img/plantilla/logoPie";
+
+					/*=============================================
+					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
+					=============================================*/
+
+					if(!empty($_POST["fotoActuallogopie"])){
+
+					//	unlink($_POST["fotoActuallogopie"]);
+
+					}else{
+
+						mkdir($directorioLogoPie, 0755);
+
+					}	
+
+					/*=============================================
+					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+					=============================================*/
+
+					if($_FILES["fotologopie"]["type"] == "image/jpeg"){
+
+						/*=============================================
+						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+						=============================================*/
+
+						$aleatorio = mt_rand(100,999);
+
+						$rutaLogoPie = "vistas/img/plantilla/logoPie/".$aleatorio.".jpg";
+
+						$origen = imagecreatefromjpeg($_FILES["fotologopie"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagejpeg($destino, $rutaLogoPie);
+
+					}
+
+					if($_FILES["fotologopie"]["type"] == "image/png"){
+
+						/*=============================================
+						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+						=============================================*/
+
+						$aleatorio = mt_rand(100,999);
+
+						$rutaLogoPie = "vistas/img/plantilla/logoPie/".$aleatorio.".jpg";
+
+						$origen = imagecreatefrompng($_FILES["fotologopie"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagepng($destino, $rutaLogoPie);
+
+					}
+
+				}
+
 
 
 	
@@ -284,6 +363,7 @@ class ControladorConfiguracion{
 				$datos = array("id" => $_POST["idConfig"],
 							   "logo" => $rutaLogo,
 							   "logoIcon" => $rutaIcono,
+							   "logoPie" => $rutaLogoPie,
 							   "tamanioLogoMenu" => $_POST["tamanioLogoMenu"],
 							   "tamanioLogoPie" => $_POST["tamanioLogoPie"],
 							   "nombreTienda" => $_POST["nombreEmpresa"],
@@ -294,6 +374,7 @@ class ControladorConfiguracion{
 							   "colorMenu" => $_POST["colorMenu"],
 							   "colorTextoMenu" => $_POST["colorTextoMenu"],
 							   "direccion" => $_POST["direccion"],
+							   "tamanioNombre" => $_POST["tamanioNombre"],
 							   "idUsuario" => $_SESSION["id"]);
 
 				$respuesta = ModeloConfiguracion::mdlEditarConfig($tabla, $datos);

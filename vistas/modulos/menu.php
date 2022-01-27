@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="inicio" class="brand-link">
       <img src="vistas/img/plantilla/logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3 ml-auto"  style="opacity: .8">
-      <span class="brand-text font-weight-light">FERXO STYLE</span>
+      <span class="brand-text font-weight-light">Innovasoft</span>
     </a>
 
     <!-- Sidebar -->

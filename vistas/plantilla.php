@@ -60,11 +60,12 @@ session_start();
                 $_GET["ruta"]=="categorias" ||
                 $_GET["ruta"]=="clientes" ||
                 $_GET["ruta"]=="productos" ||
-                $_GET["ruta"]=="cotizaciones" ||
+                $_GET["ruta"]=="preguntas" ||
                 $_GET["ruta"]=="configRedes" ||
                 $_GET["ruta"]=="configInicio" ||
                 $_GET["ruta"]=="pedidos" ||
                 $_GET["ruta"]=="viewPedido" ||
+                $_GET["ruta"]=="testimonios" ||
                 $_GET["ruta"]=="salir"){
                     include "modulos/".$_GET["ruta"].".php";
                 }else{
@@ -86,6 +87,8 @@ session_start();
             echo '<script src="vistas/js/configuracion.js"></script>';
             echo '<script src="vistas/js/pedidos.js"></script>';
             echo '<script src="vistas/js/productos.js"></script>';
+            echo '<script src="vistas/js/preguntas.js"></script>';
+            echo '<script src="vistas/js/testimonios.js"></script>';
             
             echo '</body>';
         }else{

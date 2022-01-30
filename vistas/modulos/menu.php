@@ -42,7 +42,22 @@
                 </a>
             </li>
 
-
+            <li class="nav-item">
+                <a href="preguntas" class="nav-link">
+                <i class="nav-icon fas fa-question"></i>
+                <p>
+                  Preguntas frecuentes
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="testimonios" class="nav-link">
+                <i class="nav-icon fas fa-comments"></i>
+                <p>
+                  testimonios
+                </p>
+                </a>
+            </li>
             <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-dolly-flatbed"></i>
@@ -73,14 +88,7 @@
              
             </ul>
           </li>
-            <li class="nav-item" hidden>
-                <a href="cotizaciones" class="nav-link">
-                <i class="nav-icon fas fa-calculator"></i>
-                <p>
-                  Cotizaciones
-                </p>
-                </a>
-            </li>
+
 
             <li class="nav-item">
             <a href="#" class="nav-link">

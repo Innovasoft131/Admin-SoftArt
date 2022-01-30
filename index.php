@@ -9,6 +9,8 @@ require_once "controladores/cotizaciones.controlador.php";
 require_once "controladores/configuracion.controlador.php";
 require_once "controladores/pedidos.controlador.php";
 require_once "controladores/productos.controlador.php";
+require_once "controladores/preguntas.controlador.php";
+require_once "controladores/testimonios.controlador.php";
 
 
 
@@ -21,6 +23,8 @@ require_once "modelos/cotizaciones.modelo.php";
 require_once "modelos/configuracion.modelo.php";
 require_once "modelos/pedidos.modelo.php";
 require_once "modelos/productos.modelo.php";
+require_once "modelos/preguntas.modelo.php";
+require_once "modelos/testimonios.modelo.php";
 
 
 $plantilla = new ControladorPlantilla();

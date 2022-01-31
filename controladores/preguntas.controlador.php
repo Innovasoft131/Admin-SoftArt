@@ -10,8 +10,8 @@ class ControladorPreguntas{
 
 		if(isset($_POST["nuevaPregunta"])){
 
-			if(preg_match('/^[a-zA-Z0-9 áéíóú.,?¿¡!*]+$/', $_POST["nuevaPregunta"]) &&
-			   preg_match('/^[a-zA-Z0-9 áéíóú.,?¿¡!*]+$/', $_POST["nuevaRespuesta"]) ){
+			if(preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ.,?¿¡!*]+$/', $_POST["nuevaPregunta"]) &&
+			   preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ\s().,?¿¡!*]+$/', $_POST["nuevaRespuesta"]) ){
 
 
 				$tabla = "preguntas";
@@ -106,8 +106,8 @@ class ControladorPreguntas{
 
 		if(isset($_POST["editarPregunta"])){
 
-			if(preg_match('/^[a-zA-Z0-9 áéíóú.,?¿¡!*]+$/', $_POST["editarRespuesta"]) &&
-                preg_match('/^[a-zA-Z0-9 áéíóú.,?¿¡!*]+$/', $_POST["editarPregunta"])){
+			if(preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ\s().,?¿¡!*]+$/', $_POST["editarRespuesta"]) &&
+                preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ.,?¿¡!*]+$/', $_POST["editarPregunta"])){
 
 
 				$tabla = "preguntas";

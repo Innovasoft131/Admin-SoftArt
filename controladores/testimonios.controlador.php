@@ -11,7 +11,7 @@ class ControladorTestimonios{
 		if(isset($_POST["nuevoNombreCliente"])){
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoNombreCliente"]) &&
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoCalificacion"]) &&
-			   preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ.,?¿¡!*]+$/', $_POST["nuevoTestimonio"])){
+			   preg_match('/^[a-zA-Z0-9\s ñÑáéíóúÁÉÍÓÚ.,?¿¡!*()]+$/', $_POST["nuevoTestimonio"])){
 
 			   	/*=============================================
 				VALIDAR IMAGEN
@@ -176,7 +176,7 @@ class ControladorTestimonios{
 		if(isset($_POST["editarNombreCliente"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarNombreCliente"]) &&
-            preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ.,?¿¡!*]+$/', $_POST["editarTestimonio"])){
+            preg_match('/^[a-zA-Z0-9 ñÑáéíóúÁÉÍÓÚ.,?¿¡!*\s()]+$/', $_POST["editarTestimonio"])){
 
 				/*=============================================
 				VALIDAR IMAGEN

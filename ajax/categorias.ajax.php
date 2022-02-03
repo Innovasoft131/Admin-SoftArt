@@ -7,22 +7,9 @@ class AjaxCategorias{
 	public $imgName;
     public $imagenType;
 
-    public function insertCategoria(){
-
-
-		$categoria = $this->categoria;
-
-		$imgName = $this -> imgName;
-
-        $imagenType = $this -> imagenType;
-
-		$datos = array(
-			"categoria" => $categoria,
-			"imgName" => $imgName,
-            "imagenType" => $imagenType
-		);
-
-		$respuesta = Controladorcategorias::ctrInsertCategorias($datos);
+    public function insertCategoria($Json){
+		
+		$respuesta = Controladorcategorias::ctrInsertCategorias($Json);
 
 		echo json_encode($respuesta);
 
@@ -60,17 +47,9 @@ class AjaxCategorias{
 
 if(isset($_POST["guardarCategorias"])){
     $ajaxCategorias = new AjaxCategorias();
-    $ajaxCategorias -> categoria = $_POST["categoria"];
-	if(isset($_FILES["img"])){
-        $ajaxCategorias -> imgName = $_FILES["img"]['tmp_name'];
+    $Json = json_decode($_POST["categoria"], true);
 
-        $ajaxCategorias -> imagenType	= $_FILES['img']['type'];
-    }else{
-        $ajaxCategorias -> imgName = "";
-
-        $ajaxCategorias -> imagenType	= "";
-    }
-    $ajaxCategorias -> insertCategoria();
+    $ajaxCategorias -> insertCategoria($Json);
 }
 
 if(isset($_POST["eliminarCategoria"])){

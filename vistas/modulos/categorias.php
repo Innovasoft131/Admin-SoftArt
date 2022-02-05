@@ -72,6 +72,7 @@
                             <td>
                               <div class="btn-group">
                                 <button class="btn btn-warning btnEditarCategoria" idCategoria="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarCategoria"><i class="fas fa-pen"></i></button>
+                                <button class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-trash"></i></button>
                               </div>  
                             </td>
                         </tr>';
@@ -179,10 +180,10 @@
                 <div class="input-group">
                   <div class="input-group-append">
                     <div class="input-group-text">
-                      <span class="fas fa-tshirt"></span>
+                      <span class="fas fa-spray-can"></span>
                     </div>
                   </div>
-                  <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" required>
+                  <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" readonly required>
 
                  <input type="hidden"  name="idCategoria" id="idCategoria" required>
                 </div>
@@ -190,7 +191,27 @@
 
 
 
+             <!-- entrada de subCategoria -->
+             <div class="form-group col-xs-6">
+                <div class="input-group autocompletar">
+                  <div class="input-group-text">
+                      <span class="fas fa-th"></span>
+                  </div>
+                  <input type="text" title="Ingresar subcategoría" placeholder="Ingresar subcategoría" class="form-control" name="editarsubCategoria" id="editarsubCategoria">
+                  
+                  <button type="button" class="btn btn-info" title="Guardar" id="btnGuardarsubCategoria"><i class="fas fa-save"></i>  </button>
+                  <button type="button" class="btn btn-info" title="Editar" id="btnEditartbsubCategoria" style="background: rgb(255 136 2); border: 0px solid ;"><i class="fas fa-pen"></i>  </button>
+                </div>
+              </div> 
 
+              <!-- entrada de colores -->
+              <div class="form-group">
+              <div class="input-group">
+                <table class="table table-striped table-bordered table-hover" id="tbSubCategoriasEditar">
+                  
+                </table>
+              </div>
+            </div>
 
            
       
@@ -201,15 +222,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary" style="background:#3c8dbc;  border: 0px solid">Guardar</button>
           </div>
-          <?php
-            
-            $editarCategoria = new Controladorcategorias();
-            $editarCategoria -> ctrEditarCategoria();
-            
-
-          ?> 
         </form>
     </div>
   </div>

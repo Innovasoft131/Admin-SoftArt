@@ -30,20 +30,12 @@ class Controladorcategorias{
 		$tabla = "subCategorias";
 
 		$respuesta = ModeloCategorias::MdlMostrarSubCategorias($tabla, $item, $valor);
-	
+		
 		return $respuesta;
 	}
 
 
-    static public function ctrDeleteCategoria($datos, $foto){
-
-		if($foto != ""){
-
-			unlink('../'.$foto);
-			//rmdir('../vistas/img/categorias/'.$datos);
-
-		}
-
+    static public function ctrDeleteCategoria($datos){
 
 		$tabla = "categorias";
 
@@ -52,7 +44,7 @@ class Controladorcategorias{
 		return $respuesta;
 	}
 
-    	/*=============================================
+    /*=============================================
 	EDITAR CATEGORIA
 	=============================================*/
 
@@ -127,4 +119,64 @@ class Controladorcategorias{
 		}
 
 	}
+
+
+	/*=============================================
+	REGISTRAR SUBCATEGORIA
+	=============================================*/
+	static public function ctrInsertSubCategoria($datos){
+		if(preg_match('/^[a-zA-Z0-9 ÁÉÍÓÚáéíóúñÑ]+$/', $datos["subCategoria"])){
+
+			$tabla = "subCategorias";
+			$respuestar = ModeloCategorias::mdlInsertSubCategoria($tabla, $datos);
+			
+			return $respuestar;
+			
+
+		}
+
+	}
+
+	/*=============================================
+	ELIMINAR SUBCATEGORIA
+	=============================================*/
+
+	static public function ctrDeleteSubCategorias($datos){
+
+		$tabla = "subCategorias";
+
+		$respuesta = ModeloCategorias::MdlDeleteCategoria($tabla, $datos);
+	
+		return $respuesta;
+	}
+
+
+	/*=============================================
+	EDITAR SUBCATEGORIA
+	=============================================*/
+
+	static public function ctrEditarSubCategorias($datos){
+		if(isset($datos["subCategoria"])){
+
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $datos["subCategoria"])){
+              
+
+		
+				$tabla = "subCategorias";
+
+
+				$respuesta = ModeloCategorias::mdlEditarSubCategoria($tabla, $datos);
+
+				return $respuesta;
+
+
+			}
+
+		}
+
+	}
+
+
+
+
 }

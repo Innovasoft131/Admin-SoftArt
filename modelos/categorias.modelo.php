@@ -102,11 +102,21 @@ class ModeloCategorias{
     // ELIMINAR CATEGORIA
     static public function MdlDeleteCategoria($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
+		$cn = Conexion::conectar();
+		$cn -> beginTransaction();
 
+		$stmtSub = $cn -> prepare("DELETE FROM subCategorias WHERE idCategoria= :id");
+		$stmtSub -> bindParam(":id", $datos, PDO::PARAM_INT);
+		$stmtSub->execute();
+
+		$stmt = $cn -> prepare("DELETE FROM $tabla WHERE id = :id");
 		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
 
-		if($stmt -> execute()){
+		$stmt->execute();
+
+		
+
+		if($cn -> commit()){
 
 			return "ok";
 		
@@ -123,7 +133,7 @@ class ModeloCategorias{
 
 	}
 
-		/*=============================================
+	/*=============================================
 	EDITAR CATEGORIA
 	=============================================*/
 
@@ -148,4 +158,53 @@ class ModeloCategorias{
 		$stmt = null;
 
 	}
+
+	/*=============================================
+	REGISTRAR SUBCATEGORIA
+	=============================================*/
+
+	static public function mdlInsertSubCategoria($tabla, $datos){
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(idCategoria, nombre)VALUES(:idCategoria, :nombre)");
+
+		$stmt -> bindParam(":idCategoria", $datos["idCategoria"], PDO::PARAM_STR);
+		$stmt -> bindParam(":nombre", $datos["subCategoria"], PDO::PARAM_STR);
+
+		if($stmt -> execute()){
+			return "ok";
+		}else{
+			return "error";
+		}
+
+		$stmt->close();
+		
+		$stmt = null;
+	}
+
+	/*=============================================
+	EDITAR SubCATEGORIA
+	=============================================*/
+
+	static public function mdlEditarSubCategoria($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :categoria WHERE id = :id");
+
+		$stmt -> bindParam(":categoria", $datos["subCategoria"], PDO::PARAM_STR);
+		$stmt -> bindParam(":id", $datos["idSubCategoria"], PDO::PARAM_INT);
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt->close();
+		$stmt = null;
+
+	}
+
+
 }

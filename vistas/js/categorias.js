@@ -360,7 +360,6 @@ $(document).on("click", ".btnEliminarSubCategoria", function(){
 
 $(document).on("click", "#btnGuardarsubCategoria", function(){
   const subCategoria = document.getElementById("editarsubCategoria").value;
-  validarDuplicados(subCategoria);
 
   if(subCategoria == ''){
     Swal.fire({
@@ -369,6 +368,37 @@ $(document).on("click", "#btnGuardarsubCategoria", function(){
       text: 'Ingresar subcategoría'
     });
   }
+
+  const validarDuplicados = async(subCategoria) => {
+    var datos = new FormData();
+    datos.append("subCategoria", subCategoria);
+    datos.append("validarDuplicados", "");
+  
+    const enviarDatos = await fetch(
+      'ajax/categorias.ajax.php',
+      {
+        method : 'POST',
+        body : datos
+      }
+    );
+  
+    const respuesta = await enviarDatos.json();
+    if(respuesta.length != 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error...',
+        text: 'Subcategoría ya se encuentra registrada'
+      });
+  
+      document.getElementById("editarsubCategoria").value = "";
+    }else{
+      guardarsubCategoria();
+    }
+   
+  }
+  validarDuplicados(subCategoria);
+
+  
   
   const guardarsubCategoria = async() => {
     const idCategoria = document.getElementById("idCategoria").value;
@@ -405,34 +435,10 @@ $(document).on("click", "#btnGuardarsubCategoria", function(){
     }
   }
 
-  guardarsubCategoria();
+  
 });
 
-const validarDuplicados = async(subCategoria) => {
-  var datos = new FormData();
-  datos.append("subCategoria", subCategoria);
-  datos.append("validarDuplicados", "");
 
-  const enviarDatos = await fetch(
-    'ajax/categorias.ajax.php',
-    {
-      method : 'POST',
-      body : datos
-    }
-  );
-
-  const respuesta = await enviarDatos.json();
-  if(respuesta.length != 0){
-    Swal.fire({
-      icon: 'error',
-      title: 'Error...',
-      text: 'Subcategoría ya se encuentra registrada'
-    });
-
-    document.getElementById("editarsubCategoria").value = "";
-  }
- 
-}
 
 // Eliminar subcategoria en la edicion
 $(document).on("click", ".btnEliminarSubCategoriaEditar", function(){
@@ -482,7 +488,7 @@ $(document).on("click", "#btnEditartbsubCategoria", function(){
   const subCategoria = document.getElementById("editarsubCategoria").value;
   const idCategoria = document.getElementById("idCategoria").value;
 
-  validarDuplicados(subCategoria);
+
 
   if(subCategoria == ''){
     Swal.fire({

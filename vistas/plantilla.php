@@ -16,7 +16,8 @@ session_start();
   <!-- DataTables -->
   <link rel="stylesheet" href="vistas/plugins/datatables/datatables.min.css">
   <link rel="stylesheet" href="vistas/plugins/datatables/DataTables-1.10.23/css/dataTables.bootstrap4.css">
-  
+  <!-- summernote -->
+  <link rel="stylesheet" href="vistas/plugins/summernote/summernote.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/dist/css/adminlte.css">
@@ -39,6 +40,8 @@ session_start();
 
    <script src="vistas/plugins/sweetalert2/sweetalert2.all.js"></script>
    <script src="vistas/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
+    <!-- Summernote -->
+    <script src="vistas/plugins/summernote/summernote.min.js"></script>
 </head>
 
 <!-- Site wrapper -->

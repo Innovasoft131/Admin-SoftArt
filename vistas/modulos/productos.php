@@ -62,7 +62,7 @@
 
   <!-- Modal Registro -->
 <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form role="form" method="post" autocomplete="off" enctype="multipart/form-data">
           <div class="modal-header" style="background: rgb(255 136 2); color: white;">
@@ -78,7 +78,7 @@
                 <div class="input-group">
                   <div class="input-group-append">
                     <div class="input-group-text">
-                      <span class="fa fa-th"></span>
+                      <span class="fa fa-spray-can"></span>
                     </div>
                   </div>
                   <select class="form-control input-lg" id="nuevaCategoria" name="nuevaCategoria" required>
@@ -102,18 +102,24 @@
                 </select>
                 </div>
               </div>
-            <!-- ENTRADA PARA EL CÓDIGO -->
-              <div class="form-group ">
-                <div class="input-group autocompletar">
+              <!-- ENTRADA PARA SELECCIONAR SUBCATEGORÍA -->
+              <div class="form-group">
+                <div class="input-group">
                   <div class="input-group-append">
                     <div class="input-group-text">
-                      <span class="fas fa-code"></span>
+                      <span class="fa fa-th"></span>
                     </div>
                   </div>
-                  <input type="text" class="form-control input-lg" id="nuevoCodigo" name="nuevoCodigo" placeholder="Ingresar código" readonly required>
+                  <select class="form-control input-lg" id="nuevaSubCategoriaP" name="nuevaSubCategoriaP" required>
                   
+                  <option value="">Selecciona subcategoría</option>
+
+
+  
+                </select>
                 </div>
               </div>
+
 
               <!-- ENTRADA PARA LA DESCRIPCIÓN -->
               <div class="form-group ">
@@ -123,131 +129,68 @@
                       <span class="fas fa-keyboard"></span>
                     </div>
                   </div>
-                  <input type="text" class="form-control input-lg" name="nuevaNombre" placeholder="Ingresar Nombre" required>
+                  <input type="text" class="form-control input-lg" name="nuevaNombre" id="nuevaNombre" placeholder="Ingresar Nombre" required>
                   
                 </div>
               </div>
 
-              <!-- ENTRADA PARA STOCK -->
-              <div class="form-group ">
-                <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-check"></span>
-                    </div>
-                  </div>
-                  <input type="number" class="form-control input-lg" name="nuevoStock" min="0" placeholder="Stock" required>
-                  
+            <!-- Entrada de tamaños -->
+            <div class="form-group">
+                <div class="input-group ">
+
+                  <input type="text" class="form-control" name="nuevotamanio" id="nuevotamanio" placeholder="Tamaño (Opcional)" require>
+                  <input type="text" class="form-control" name="nuevomedidas" id="nuevomedidas" placeholder="Medidas (Opcional)" require>
+                  <input type="text" class="form-control" name="nuevoMaterial" id="nuevoMaterial" placeholder="Material (Opcional)" require>
+
                 </div>
-              </div>              
-
-              <!-- ENTRADA PARA PRECIO COMPRA -->
-              <div class="form-group ">
-                <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-arrow-up"></span>
-                    </div>
-                  </div>
-                  <input type="number" class="form-control input-lg" id="nuevoPrecioCompra" name="nuevoPrecioCompra" step="any" min="0" placeholder="Precio de compra" required>
-                  
-                </div>
-              </div>    
-
-             <!-- ENTRADA PARA PRECIO VENTA -->
-              <div class="form-group ">
-                <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-arrow-down"></span>
-                    </div>
-                  </div>
-                  <input type="number" class="form-control input-lg" id="nuevoPrecioVenta" name="nuevoPrecioVenta" step="any" min="0" placeholder="Precio de venta" required>
-                  
-                </div>
-              </div>                
-
-             <!-- ENTRADA PARA OFERTA -->
-             <div class="form-group ">
-                <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fas fa-tags"></span>
-                    </div>
-                  </div>
-                  <input type="number" class="form-control input-lg" id="nuevoPrecioOferta" name="nuevoPrecioOferta" step="any" min="0" placeholder="Precio de oferta (Opcional)" required>
-                  
-                </div>
-              </div> 
-
-             <!-- CHECKBOX PARA PORCENTAJE -->
-             <div class="form-group col-xs-6">
-                <div class="input-group autocompletar">
-                  <label>
-                        
-                        <input type="checkbox" class="minimal porcentaje" checked>
-                        Utilizar procentaje
-                      </label>
-                  
-                </div>
-              </div>  
-
-             <!-- ENTRADA PARA PORCENTAJE -->
-             <div class="form-group col-xs-6">
-                <div class="input-group autocompletar">
-                <input type="number" class="form-control input-lg nuevoPorcentaje" min="0" value="40" required>
-
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-percent"></span>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div> 
-
-                
-             <!-- entrada de color -->
-             <div class="form-group col-xs-6">
-                <div class="input-group autocompletar">
-                  <input type="color" title="Selecciona color" class="btnColor" name="nuevoColor" id="nuevoColor" value="#2498cb">
-                  <label class="labelC">
-                    Selecciona color (opcional)
-                  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="btn btn-info" title="Agregar color a tabla" id="btnAgregarColor" style="background: rgb(255 136 2); border: 0px solid ;"><i class="fas fa-plus"></i> Agregar a tabla </button>
-                </div>
-              </div> 
-
-              <!-- entrada de colores -->
-              <div class="form-group">
-              <div class="input-group">
-                <table class="table table-bordered table-hover" id="tbProductoColor">
-                  
-                </table>
               </div>
-            </div>
 
             <!-- Entrada de talla -->
             <div class="form-group">
-                <div class="input-group ">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fas fa-ruler-horizontal"></span>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control col-9" name="nuevotalla" id="nuevotalla" placeholder="Talla (Opcional)" require="">
+                <div class="input-group">
+
+                  <input type="text" class="form-control" name="nuevoPrecio" id="nuevoPrecio" placeholder="Precio (Opcional)" require>
+                  <input type="text" class="form-control" name="nuevoCantidad" id="nuevoCantidad" placeholder="Cantidad (Opcional)" require>
                   
-                  <button type="button" class="btn btn-info col-2" id="btnagregarTalla" title="Agregar talla a tabla" style="background:#3c8dbc; color:white; border: 0px solid">
+                  
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <label for="nuevoColor" id= "lbColor">
+                    ¿Color?
+                    <input type="checkbox" class="ckColor" name="nuevoColor" id="nuevoColor"    data-bootstrap-switch>
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="color" hidden  title="Color en palabra de slogan" class="btnColor col-2" name="colorProducto" id="colorProducto" value="#000">
+                  
+                  <button type="button" class="btn btn-info col-2" id="btnagregarDetalleProducto" title="Agregar detalles del producto" style="background:#3c8dbc; color:white; border: 0px solid">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
               </div>
+
               <!-- entrada de tallas -->
               <div class="form-group">
               <div class="input-group">
-                <table class="table table-bordered table-hover" id="tbProductoTalla">
-                  
-                </table>
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered table-hover" id="tbProductoTalla">
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">Tamaño</th>
+                        <th scope="col">Medidas</th>
+                        <th scope="col">Material</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Acción</th>
+                      </tr>
+                    </thead>
+                    
+                  </table>
+
+                </div>
               </div>
             </div>
 
@@ -255,21 +198,19 @@
               <!-- entrada para la descripción -->
              <div class="form-group ">
                 <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fas fa-pencil-alt"></span>
-                    </div>
-                  </div>
-                  <textarea class="form-control" id="nuevoDescripcion" name="nuevoDescripcion" rows="3" placeholder="Descripción del producto" required></textarea>
+                  
+                    <textarea class="form-control" id="summernote">
+                      Descripción
+                    </textarea>
 
                   
                 </div>
               </div> 
 
               <!-- subir foto -->
-              <div class="form-group">
+              <div class="form-group col-12">
                 <div class="panel">Subir</div>
-                <input type="file" class="nuevaImagen" name="nuevaImagenI" id="nuevaImagenI">
+                <input type="file" class="nuevaImagen col-12" name="nuevaImagenI" id="nuevaImagenI">
                 <p class="help-block">Peso máximo de la foto 6 MB</p>
                 <img src="vistas/img/usuarios/default/1.jpg" class="img-thumbnail previsualizar" id="imagen" width="100px">
                 

@@ -47,21 +47,7 @@ $(".foto").change(function(){
   	}
 });
 
-$("[name='oferta']").bootstrapSwitch();
 
-$('input[name="oferta"]').on('switchChange.bootstrapSwitch', function (event, state) {
-//console.log(this); // DOM element
-//console.log(event); // jQuery event
-//console.log(state); // true | false
-var divOferta = document.getElementById("divOferta");
-
-if (state == true){
-    divOferta.removeAttribute("hidden"  );
-  } else {
-      
-    divOferta.setAttribute("hidden", true);
-  }
-});
 
 $("[name='ofertaEditar']").bootstrapSwitch();
 

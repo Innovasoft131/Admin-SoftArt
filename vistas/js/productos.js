@@ -13,6 +13,22 @@ CARGAR LA TABLA DINÁMICA DE PRODUCTOS
 
 // })
 
+$(function () {
+	$('#summernote').summernote({
+        height: 300,
+        toolbar: [
+            [ 'style', [ 'style' ] ],
+            [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
+            [ 'fontname', [ 'fontname' ] ],
+            [ 'fontsize', [ 'fontsize' ] ],
+            [ 'color', [ 'color' ] ],
+            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
+            [ 'table', [ 'table' ] ],
+            [ 'insert', [ 'link'] ],
+            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+        ]
+    });
+});
 $('.tablaProductos').DataTable( {
     "ajax": "ajax/datatable-productos.ajax.php",
     "deferRender": true,
@@ -47,136 +63,12 @@ $('.tablaProductos').DataTable( {
 
 } );
 
-/*=============================================
-CAPTURANDO LA CATEGORIA PARA ASIGNAR CÓDIGO
-=============================================*/
-$("#nuevaCategoria").change(function(){
-
-	var idCategoria = $(this).val();
-
-	var datos = new FormData();
-  	datos.append("idCategoria", idCategoria);
-
-  	$.ajax({
-
-      url:"ajax/productos.ajax.php",
-      method: "POST",
-      data: datos,
-      cache: false,
-      contentType: false,
-      processData: false,
-      dataType:"json",
-      success:function(respuesta){
-
-      	if(!respuesta){
-
-      		var nuevoCodigo = idCategoria+"01";
-      		$("#nuevoCodigo").val(nuevoCodigo);
-
-      	}else{
-
-      		var nuevoCodigo = Number(respuesta["codigo"]) + 1;
-          	$("#nuevoCodigo").val(nuevoCodigo);
-
-      	}
-                
-      }
-
-  	})
-
-})
-
-/*=============================================
-AGREGANDO PRECIO DE VENTA
-=============================================*/
-$("#nuevoPrecioCompra, #editarPrecioCompra").change(function(){
-
-	if($(".porcentaje").prop("checked")){
-
-		/*
-			P= Precio de venta.
-
-			C= Costo de producción.
-
-			R= Rentabilidad o ganancia que se aspira a obtener con la venta del producto en %. 
-		*/
-		//var valorPorcentaje = $(".nuevoPorcentaje").val();
-		var c = $(".nuevoPorcentaje").val();
-		const r = $("#nuevoPrecioCompra").val();
-		const rentabilidad = Number(100 - c);
-		const divi = Number(100/rentabilidad);
-		const p = Number( r * divi);
-
-		
-		
-	//	var porcentaje = Number(($("#nuevoPrecioCompra").val()*valorPorcentaje/100))+Number($("#nuevoPrecioCompra").val());
-
-	//	var editarPorcentaje = Number(($("#editarPrecioCompra").val()*valorPorcentaje/100))+Number($("#editarPrecioCompra").val());
-
-		const redondear = Math.round( (p + Number.EPSILON) * 100  )/ 100;
-		$("#nuevoPrecioVenta").val(redondear);
-	//	//$("#nuevoPrecioVenta").prop("readonly",true);
-
-		$("#editarPrecioVenta").val(p);
-	//	$("#editarPrecioVenta").prop("readonly",true);
-
-	}
-
-})
-
-/*=============================================
-CAMBIO DE PORCENTAJE
-=============================================*/
-$(".nuevoPorcentaje").change(function(){
-
-	if($(".porcentaje").prop("checked")){
-		/*
-		var valorPorcentaje = $(this).val();
-		
-		var porcentaje = Number(($("#nuevoPrecioCompra").val()*valorPorcentaje/100))+Number($("#nuevoPrecioCompra").val());
-
-		var editarPorcentaje = Number(($("#editarPrecioCompra").val()*valorPorcentaje/100))+Number($("#editarPrecioCompra").val());
-		*/
-				/*
-			P= Precio de venta.
-
-			C= Costo de producción.
-
-			R= Rentabilidad o ganancia que se aspira a obtener con la venta del producto en %. 
-		*/
-
-		var c = $(this).val();
-		const r = $("#nuevoPrecioCompra").val();
-		const rentabilidad = Number(100 - c);
-		const divi = Number(100/rentabilidad);
-		const p = Number( r * divi);
-
-		const redondear = Math.round( (p + Number.EPSILON) * 100  )/ 100;
-		$("#nuevoPrecioVenta").val(redondear);
 
 
-/*
-		$("#editarPrecioVenta").val(editarPorcentaje);
-		$("#editarPrecioVenta").prop("readonly",true);
-		*/
 
-	}
 
-})
 
-$(".porcentaje").on("ifUnchecked",function(){
 
-	$("#nuevoPrecioVenta").prop("readonly",false);
-	$("#editarPrecioVenta").prop("readonly",false);
-
-})
-
-$(".porcentaje").on("ifChecked",function(){
-
-	$("#nuevoPrecioVenta").prop("readonly",true);
-	$("#editarPrecioVenta").prop("readonly",true);
-
-})
 
 /*=============================================
 SUBIENDO LA FOTO DEL PRODUCTO
@@ -205,7 +97,7 @@ $(".nuevaImagen").change(function(){
 
   		$(".nuevaImagen").val("");
 
-  		 swal({
+		  Swal.fire({
 		      title: "Error al subir la imagen",
 		      text: "¡La imagen no debe pesar más de 2MB!",
 		      type: "error",
@@ -228,10 +120,11 @@ $(".nuevaImagen").change(function(){
   	}
 })
 
+
 /*=============================================
 EDITAR PRODUCTO
 =============================================*/
-
+/*
 $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function(){
 
 	var idProducto = $(this).attr("idProducto");
@@ -294,6 +187,8 @@ $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function(){
   })
 
 })
+
+*/
 
 /*=============================================
 ELIMINAR PRODUCTO
@@ -419,13 +314,264 @@ const mostrarTalla = () =>{
 }
 
 
-/* mostrar colores en tabla */
-$(document).on("click", "#btnagregarTalla", function(){
-	mostrarTalla();
+
+
+$(document).on("change", "#nuevaCategoria", function(){
+
+	const idCategoria = $(this).val();
+
+	const cmbSubCategoria = document.getElementById("nuevaSubCategoriaP");
+
+	document.getElementById("nuevaSubCategoriaP").innerHTML = "";
+	const datos = new FormData();
+	datos.append("mostrarSubCategorias", '');
+	datos.append("idCategorias", idCategoria);
+
+	const enviarDatos = async() =>{
+		const enviarDatosMostrar = await fetch(
+			'ajax/categorias.ajax.php',
+			{
+				method : 'POST',
+				body : datos
+			}
+		);
+		const respuesta = await enviarDatosMostrar.json();
+		
+		const options = document.createElement('option');
+		const nodos = document.createTextNode("Selecciona subcategoría");
+		options.appendChild(nodos);
+		cmbSubCategoria.appendChild(options);
+		
+		for (let i = 0; i < respuesta.length; i++) {
+
+			const option = document.createElement('option');
+			option.setAttribute('value', respuesta[i]["id"]);
+			const nodo = document.createTextNode(respuesta[i]["nombre"]);
+
+			option.appendChild(nodo);
+
+			cmbSubCategoria.appendChild(option);
+			
+		}
+		
+	}
+
+	enviarDatos();
+
+	
+
 });
 
-/* eliminar talla desde la tabla */
-$(document).on("click", ".btnEliminarTallas", function(){
+$("[name='nuevoColor']").bootstrapSwitch();
 
-	$(this).closest("tr").remove();
+$('input[name="nuevoColor"]').on('switchChange.bootstrapSwitch', function (event, state) {
+//console.log(this); // DOM element
+//console.log(event); // jQuery event
+//console.log(state); // true | false
+var inputColor = document.getElementById("colorProducto");
+
+if (state == true){
+  inputColor.removeAttribute("hidden"  );
+  } else {
+      
+    inputColor.setAttribute("hidden", true);
+  }
+});
+
+const mostrarDetalleProducto = () =>{
+	
+	var listaProductos = JSON.parse(localStorage.getItem("listProductos"));
+	var agregarProducto = false;
+	var id = Date.now();
+	
+	const pruguntaColor = $("#nuevoColor").bootstrapSwitch('state');
+	const tamanio = document.getElementById("nuevotamanio").value;
+	const medida = document.getElementById("nuevomedidas").value;
+	const material = document.getElementById("nuevoMaterial").value;
+	const precio = document.getElementById("nuevoPrecio").value;
+	const cantidad = document.getElementById("nuevoCantidad").value;
+	const color = document.getElementById("colorProducto").value;
+
+
+
+	// se valida si la lista de detalle de productos tiene datos 
+	if(listaProductos != null){
+		const detalleProductoDuplicado = listaProductos.find(detalleProducto => (detalleProducto["tamanio"] == tamanio && 
+																detalleProducto["medida"] == medida && detalleProducto["material"] == material) 
+																&& detalleProducto["precio"] == precio && detalleProducto["cantidad"] == cantidad &&
+																detalleProducto["color"] == color);
+		if(detalleProductoDuplicado != undefined){
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: 'La combinación de detalle del producto ya fue agregada anteriormente',
+				showConfirmButton: false,
+				timer: 1500
+			  });
+			  agregarProducto = false;
+			  document.getElementById("nuevotamanio").value = '';
+			  document.getElementById("nuevomedidas").value = '';
+			  document.getElementById("nuevoMaterial").value = '';
+			  document.getElementById("nuevoPrecio").value = '';
+			  document.getElementById("nuevoCantidad").value = '';
+			  document.getElementById("colorProducto").value = '#000';
+		}else{
+			agregarProducto = true;
+		}
+
+	}else{
+		agregarProducto = true;
+	}  
+	
+	if(agregarProducto == true){
+		// se recuperan los datos 
+		if(localStorage.getItem("listProductos") == null){
+			listaProductos = [];
+		}else{
+			listaProductos.concat(localStorage.getItem("listProductos"));
+		}
+		
+
+		if(pruguntaColor == false){
+			listaProductos.push({
+				"id" : id,
+				"tamanio" : tamanio,
+				"medida" : medida,
+				"material" : material,
+				"precio" : precio,
+				"cantidad" : cantidad,
+				"color" : ''
+			});
+		}else{
+			listaProductos.push({
+				"id" : id,
+				"tamanio" : tamanio,
+				"medida" : medida,
+				"material" : material,
+				"precio" : precio,
+				"cantidad" : cantidad,
+				"color" : color
+			});
+
+		}
+
+		localStorage.setItem("listProductos", JSON.stringify(listaProductos));
+		document.getElementById("nuevotamanio").value = '';
+		document.getElementById("nuevomedidas").value = '';
+		document.getElementById("nuevoMaterial").value = '';
+		document.getElementById("nuevoPrecio").value = '';
+		document.getElementById("nuevoCantidad").value = '';
+		document.getElementById("colorProducto").value = '#000';
+
+		mostrarDetalleProductos();
+	}
+
+}
+
+const mostrarDetalleProductos = () =>{
+	const listaProductos = JSON.parse(localStorage.getItem("listProductos"));
+	const tabla = document.getElementById("tbProductoTalla");
+	$("#tbProductoTalla tbody").remove(); 
+	const fragmentoListaDetalleProductos = document.createDocumentFragment();
+
+	var nodoId = "";
+	var nodoTamanio = "";
+	var nodoMaterial = "";
+	var nodoMedida = "";
+	var nodoPrecio = "";
+	var nodoCantidad = "";
+	var nodoColor = "";
+	
+
+
+
+	for (let i = 0; i < listaProductos.length; i++) {
+		
+		// se crean los elementos para la tabla 
+		const body = document.createElement("tbody");
+		const tr = document.createElement("tr");
+		const th = document.createElement("th");
+		const tdId = document.createElement("td");
+		const tdtamanio = document.createElement("td");
+		const tdmedida = document.createElement("td");
+		const tdmaterial = document.createElement("td");
+		const tdprecio = document.createElement("td");
+		const tdcantidad = document.createElement("td");
+		const tdcolor = document.createElement("td");
+		const tdAccion = document.createElement("td");
+		const divAccion = document.createElement("div");
+		const btnEditar = document.createElement("button");
+		const btnEliminar = document.createElement("button");
+		const iEditar = document.createElement("i");
+		const iEliminar = document.createElement("i");
+
+		// se insertan atributos y clases a los elementos creados 
+		th.setAttribute("scope", "row");
+		divAccion.classList.add("btn-group");
+		btnEditar.classList.add("btn", "btn-warning");
+		btnEditar.setAttribute("type", "button");
+		btnEliminar.classList.add("btn", "btn-danger", "eliminarTablaProductos");
+		btnEliminar.setAttribute("id", listaProductos[i]["id"]);
+		btnEliminar.setAttribute("type", "button");
+		iEditar.classList.add("fas", "fa-pen");
+		iEliminar.classList.add("fas", "fa-trash");
+		// se crean los nodos para mostrar la info en tabla
+		nodoId = document.createTextNode(listaProductos[i]["id"]);
+		nodoTamanio = document.createTextNode(listaProductos[i]["tamanio"]);
+		nodoMaterial = document.createTextNode(listaProductos[i]["material"]);
+		nodoMedida = document.createTextNode(listaProductos[i]["medida"]);
+		nodoPrecio = document.createTextNode(listaProductos[i]["precio"]);
+		nodoCantidad = document.createTextNode(listaProductos[i]["cantidad"]);
+		nodoColor = document.createTextNode(listaProductos[i]["color"]);
+	//	th.appendChild(nodoId);
+		tdtamanio.appendChild(nodoTamanio);
+		tdmedida.appendChild(nodoMedida);
+		tdmaterial.appendChild(nodoMaterial);
+		tdcantidad.appendChild(nodoCantidad);
+		tdcolor.appendChild(nodoColor);
+		tdprecio.appendChild(nodoPrecio);
+		btnEditar.appendChild(iEditar);
+		btnEliminar.appendChild(iEliminar);
+		divAccion.appendChild(btnEditar);
+		divAccion.appendChild(btnEliminar);
+		tdAccion.appendChild(divAccion);
+	//	tr.appendChild(th);
+		tr.appendChild(tdtamanio);
+		tr.appendChild(tdmedida);
+		tr.appendChild(tdmaterial);
+		tr.appendChild(tdcantidad);
+		tr.appendChild(tdcolor);
+		tr.appendChild(tdprecio);
+		tr.appendChild(tdAccion);
+		body.appendChild(tr);
+		fragmentoListaDetalleProductos.appendChild(body);
+		tabla.appendChild(fragmentoListaDetalleProductos);
+
+		nodoId = "";
+		nodoTamanio = "";
+		nodoMaterial = "";
+		nodoMedida = "";
+		nodoPrecio = "";
+		nodoCantidad = "";
+		nodoColor = "";
+	}
+
+	
+	
+}
+
+$(document).on("click", "#btnagregarDetalleProducto", function(){
+	mostrarDetalleProducto();
+});
+
+// Eliminar detalle del producto en tabla de la modal de insertar
+$(document).on("click", ".eliminarTablaProductos", function(){
+	const id = $(this).attr('id');
+	var listaDetalleProductos = JSON.parse(localStorage.getItem('listProductos'));
+  
+  	var nuevoDetalleProducto = listaDetalleProductos.filter((detalleProductos) => detalleProductos['id'] != id);
+
+  	localStorage.setItem('listProductos', JSON.stringify(nuevoDetalleProducto));
+
+	mostrarDetalleProductos();
 });

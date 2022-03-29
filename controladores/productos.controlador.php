@@ -16,28 +16,43 @@ class ControladorProductos{
 
 	}
 
+
+	/*=============================================
+	MOSTRAR DETALLE DE LOS PRODUCTOS
+	=============================================*/
+
+	static public function ctrMostrarDetalleProductos($item, $valor){
+
+		$tabla = "detallesProducto";
+
+		$respuesta = ModeloProductos::mdlMostrarDetalleProductos($tabla, $item, $valor);
+
+		return $respuesta;
+
+	}
+
+
 	/*=============================================
 	CREAR PRODUCTO
 	=============================================*/
 
-	static public function ctrCrearProducto(){
+	static public function ctrCrearProducto($datos){
+		
+		
+		if(isset($datos["nombre"])){
 
-		if(isset($_POST["nuevaNombre"])){
-
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaNombre"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["nuevoStock"]) &&	
-			   preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioCompra"]) &&
-			   preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioVenta"])){
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $datos["idSubCategoria"]) ){
 
 		   		/*=============================================
 				VALIDAR IMAGEN
 				=============================================*/
-
+				
 			   	$ruta = "vistas/img/inventario/default/1.jpg";
+				$rutabd = "vistas/img/inventario/default/1.jpg";
 
-			   	if(isset($_FILES["nuevaImagenI"]["tmp_name"])){
+			   	if(isset($datos["imgName"])){
 					
-					list($ancho, $alto) = getimagesize($_FILES["nuevaImagenI"]["tmp_name"]);
+					list($ancho, $alto) = getimagesize($datos["imgName"]);
 
 					$nuevoAncho = 500;
 					$nuevoAlto = 500;
@@ -45,26 +60,29 @@ class ControladorProductos{
 					/*=============================================
 					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 					=============================================*/
+					
+					$directorio = "../vistas/img/inventario/".$datos["nombre"];
 
-					$directorio = "vistas/img/inventario/".$_POST["nuevoCodigo"];
-
-					mkdir($directorio, 0755);
+					if(!file_exists($directorio)){
+						mkdir($directorio, 0755);
+					}
 
 					/*=============================================
 					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
 					=============================================*/
 
-					if($_FILES["nuevaImagenI"]["type"] == "image/jpeg"){
+					if($datos["imagenType"] == "image/jpeg"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
 						=============================================*/
-
+						
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/inventario/".$_POST["nuevoCodigo"]."/".$aleatorio.".jpg";
+						$ruta = "../vistas/img/inventario/".$datos["nombre"]."/".$aleatorio.".jpg";
+						$rutabd = "vistas/img/inventario/".$datos["nombre"]."/".$aleatorio.".jpg";
 
-						$origen = imagecreatefromjpeg($_FILES["nuevaImagenI"]["tmp_name"]);						
+						$origen = imagecreatefromjpeg($datos["imgName"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
@@ -74,17 +92,18 @@ class ControladorProductos{
 
 					}
 
-					if($_FILES["nuevaImagenI"]["type"] == "image/png"){
+					if($datos["imagenType"] == "image/png"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
 						=============================================*/
-
+						
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/inventario/".$_POST["nuevoCodigo"]."/".$aleatorio.".png";
+						$ruta = "../vistas/img/inventario/".$datos["nombre"]."/".$aleatorio.".png";
+						$rutabd = "vistas/img/inventario/".$datos["nombre"]."/".$aleatorio.".png";
 
-						$origen = imagecreatefrompng($_FILES["nuevaImagenI"]["tmp_name"]);						
+						$origen = imagecreatefrompng($datos["imgName"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
@@ -96,86 +115,37 @@ class ControladorProductos{
 
 				}
 
+				$tablas = array(
+					"tabla1" => "productos"
+				);
 
-				// Validación de oferta
-				$oferta = '0';
-				if(isset($_POST["nuevoPrecioOferta"])){
-					if(preg_match('/^[0-9]+$/', $_POST["nuevoPrecioOferta"])){
-						$oferta = $_POST["nuevoPrecioOferta"];
-					}
-				}
 
-				$colores = $_POST["colores"];
-                $tallas = $_POST["tallas"];
-
-				$tabla = "productos";
-
-				$datos = array("codigo" => $_POST["nuevoCodigo"],
-							   "id_categoria" => $_POST["nuevaCategoria"],
-							   "id_usuario" => $_SESSION["id"],
-							   "nombre" => $_POST["nuevaNombre"],
-							   "precio_compra" => $_POST["nuevoPrecioCompra"],
-							   "precio_venta" => $_POST["nuevoPrecioVenta"],
-							   "precio_oferta" => $oferta,
-							   "stock" => $_POST["nuevoStock"],
-							   "descripcion" => $_POST["nuevoDescripcion"],
-							   "imagen" => $ruta,
-							   "colores" => $colores,
-							   "tallas" => $tallas
-							);
-
-				$respuesta = ModeloProductos::mdlIngresarProducto($tabla, $datos);
-
-			
-
-				if($respuesta == "ok"){
+				$datosInsert = array(
+					"idCategoria" => $datos["idCategoria"],
+					"idSubCategoria" => $datos["idSubCategoria"],
+					"nombre" => $datos["nombre"],
+					"descripcion" => $datos["descripcion"],
+					"img" => $rutabd,
+					"precio" => $datos["precio"],
+					"oferta" => $datos["oferta"]
+				);
 				
-					echo'<script>
+				
+				$respuesta = ModeloProductos::mdlIngresarProducto($tablas, $datosInsert);
 
-						Swal.fire({
-							icon: "success",
-							title: "El producto ha sido guardado correctamente",
-							showConfirmButton: true,
-							confirmButtonText: "Cerrar"
-							}).then(function(result){
-										if (result.value) {
-	
-										window.location = "productos";
-	
-										}
-									})
-	
-						</script>';
-						
-						
-
-				}
+				return $respuesta;
 
 
 			}else{
 				
 
 
-				echo'<script>
-
-				  Swal.fire({
-						  icon: "error",
-						  title: "¡El producto no puede ir con los campos vacíos o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-							  if (result.value) {
-  
-							  window.location = "usuarios";
-  
-							  }
-						  })
-  
-			  	</script>';
+				return "error_interno";
 
 				  
 			}
 		}
+		
 
 	}
 
@@ -185,22 +155,17 @@ class ControladorProductos{
 
 	static public function ctrEditarProducto(){
 
-		if(isset($_POST["editarDescripcion"])){
-
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarDescripcion"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["editarStock"]) &&	
-			   preg_match('/^[0-9.]+$/', $_POST["editarPrecioCompra"]) &&
-			   preg_match('/^[0-9.]+$/', $_POST["editarPrecioVenta"])){
+		if(isset($_POST["txtproducto"])){
 
 		   		/*=============================================
 				VALIDAR IMAGEN
 				=============================================*/
 
-			   	$ruta = $_POST["fotoActual"];
+			   	$ruta = $_POST["fotoActualProducto"];
 
-			   	if(isset($_FILES["editarImagen"]["tmp_name"]) && !empty($_FILES["editarImagen"]["tmp_name"])){
+			   	if(isset($_FILES["editarImagenI"]["tmp_name"]) && !empty($_FILES["editarImagenI"]["tmp_name"])){
 
-					list($ancho, $alto) = getimagesize($_FILES["editarImagen"]["tmp_name"]);
+					list($ancho, $alto) = getimagesize($_FILES["editarImagenI"]["tmp_name"]);
 
 					$nuevoAncho = 500;
 					$nuevoAlto = 500;
@@ -209,19 +174,21 @@ class ControladorProductos{
 					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 					=============================================*/
 
-					$directorio = "vistas/img/inventario/".$_POST["editarCodigo"];
+					$directorio = "vistas/img/inventario/".$_POST["editarNombreProductoDetalle"];
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
 					=============================================*/
 
-					if(!empty($_POST["fotoActual"]) && $_POST["fotoActual"] != "vistas/img/inventario/default/1.png"){
+					if(!empty($_POST["fotoActualProducto"]) && $_POST["fotoActualProducto"] != "vistas/img/inventario/default/1.png"){
 
-						unlink($_POST["fotoActual"]);
+						unlink($_POST["fotoActualProducto"]);
 
 					}else{
-
-						mkdir($directorio, 0755);	
+						if(file_exists($directorio)){
+							mkdir($directorio, 0755);	
+						}
+						
 					
 					}
 					
@@ -229,17 +196,16 @@ class ControladorProductos{
 					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
 					=============================================*/
 
-					if($_FILES["editarImagen"]["type"] == "image/jpeg"){
-
+					if($_FILES["editarImagenI"]["type"] == "image/jpeg"){
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
 						=============================================*/
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/inventario/".$_POST["editarCodigo"]."/".$aleatorio.".jpg";
+						$ruta = "vistas/img/inventario/".$_POST["editarNombreProductoDetalle"]."/".$aleatorio.".jpg";
 
-						$origen = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);						
+						$origen = imagecreatefromjpeg($_FILES["editarImagenI"]["tmp_name"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
@@ -249,7 +215,7 @@ class ControladorProductos{
 
 					}
 
-					if($_FILES["editarImagen"]["type"] == "image/png"){
+					if($_FILES["editarImagenI"]["type"] == "image/png"){
 
 						/*=============================================
 						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
@@ -257,9 +223,9 @@ class ControladorProductos{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/inventario/".$_POST["editarCodigo"]."/".$aleatorio.".png";
+						$ruta = "vistas/img/inventario/".$_POST["editarNombreProductoDetalle"]."/".$aleatorio.".png";
 
-						$origen = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);						
+						$origen = imagecreatefrompng($_FILES["editarImagenI"]["tmp_name"]);						
 
 						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
@@ -273,22 +239,24 @@ class ControladorProductos{
 
 				$tabla = "productos";
 
-				$datos = array("id_categoria" => $_POST["editarCategoria"],
-							   "codigo" => $_POST["editarCodigo"],
-							   "descripcion" => $_POST["editarDescripcion"],
-							   "stock" => $_POST["editarStock"],
-							   "precio_compra" => $_POST["editarPrecioCompra"],
-							   "precio_venta" => $_POST["editarPrecioVenta"],
+				$datos = array("idCategoria" => $_POST["editarCategoria"],
+							   "id" => $_POST["txtproducto"],
+							   "idSubCategoria" => $_POST["editSubCategoriaP"],
+							   "nombre" => $_POST["editarNombreProductoDetalle"],
+							   "descripcion" => $_POST["summernoteEditar"],
+							   "precio" => $_POST["editarPrecio"],
+							   "oferta" => $_POST["editarOferta"],
 							   "imagen" => $ruta);
-
+			
 				$respuesta = ModeloProductos::mdlEditarProducto($tabla, $datos);
 
 				if($respuesta == "ok"){
-
+					
 					echo'<script>
 
-						swal({
+					Swal.fire({
 							  type: "success",
+							  icon: "success",
 							  title: "El producto ha sido editado correctamente",
 							  showConfirmButton: true,
 							  confirmButtonText: "Cerrar"
@@ -302,28 +270,12 @@ class ControladorProductos{
 
 						</script>';
 
+						
+
 				}
 
 
-			}else{
-
-				echo'<script>
-
-					swal({
-						  type: "error",
-						  title: "¡El producto no puede ir con los campos vacíos o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then((result) => {
-							if (result.value) {
-
-							window.location = "productos";
-
-							}
-						})
-
-			  	</script>';
-			}
+			
 		}
 
 	}
@@ -338,10 +290,10 @@ class ControladorProductos{
 			$tabla ="productos";
 			$datos = $_GET["idProducto"];
 
-			if($_GET["fotoProducto"] != "" && $_GET["fotoProducto"] != "vistas/img/inventario/default/1.png"){
+			if($_GET["imagen"] != "" && $_GET["imagen"] != "vistas/img/inventario/default/1.png"){
 
-				unlink($_GET["fotoProducto"]);
-				rmdir('vistas/img/inventario/'.$_GET["codigo"]);
+				unlink($_GET["imagen"]);
+			/*	rmdir('vistas/img/inventario/'.$_GET["codigo"]); */
 
 			}
 
@@ -367,6 +319,62 @@ class ControladorProductos{
 				</script>';
 
 			}		
+		}
+
+
+	}
+
+	/*=============================================
+	EDITAR DETALLE DE PRODUCTO
+	=============================================*/
+	static public function ctrEditarEdetalleProducto($datos){
+		/*
+		if(preg_match('/[a-zA-Z0-9.,]+/', $datos["tamanio"]) && preg_match('/[a-zA-Z0-9.,]+/', $datos["medidas"]) &&
+		preg_match('/[a-zA-ZáéíóúñÁÉÍÓÚÑ0-9., ]+/', $datos["material"]) && preg_match('/[0-9]+/', $datos["cantidad"]) &&
+		preg_match('/[0-9$.,]+/', $datos["precio_venta"])  ){
+			*/
+			$tabla = "detallesProducto";
+
+			$respuesta = ModeloProductos::mdlEditarDetalleProducto($tabla , $datos);
+			return $respuesta;
+		/*
+		}else{
+			return 'error_sintaxis';
+		}
+		*/
+	}
+
+	/*=============================================
+	GUARDAR DETALLE DE PRODUCTO
+	=============================================*/
+	static public function ctrGuardardetalleProducto($datos){
+		if(preg_match('/[a-zA-Z0-9.,]+/', $datos["tamanio"]) && preg_match('/[a-zA-Z0-9.,]+/', $datos["medidas"]) &&
+		preg_match('/[a-zA-ZáéíóúñÁÉÍÓÚÑ0-9., ]+/', $datos["material"]) && preg_match('/[0-9]+/', $datos["cantidad"]) &&
+		preg_match('/[0-9$.,]+/', $datos["precio_venta"])  ){
+			$tabla = "detallesProducto";
+
+			$respuesta = ModeloProductos::mdlInsertDetalleProducto($tabla , $datos);
+			return $respuesta;
+
+		}else{
+			return 'error_sintaxis';
+		}
+	}
+
+
+	/*=============================================
+	BORRAR DETALLE DEL PRODUCTO
+	=============================================*/
+	static public function ctrEliminarDetalleProducto($valor){
+
+		if(isset($valor)){
+
+			$tabla ="detallesProducto";
+			$datos = $valor;
+
+			$respuesta = ModeloProductos::mdlEliminarProducto($tabla, $datos);
+
+			return $respuesta;
 		}
 
 

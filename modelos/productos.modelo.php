@@ -36,51 +36,66 @@ class ModeloProductos{
 
 	}
 
+	static public function mdlMostrarDetalleProductos($tabla, $item, $valor){
+
+		if($item != null){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id DESC");
+
+			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}else{
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
 	/*=============================================
 	REGISTRO DE PRODUCTO
 	=============================================*/
-	static public function mdlIngresarProducto($tabla, $datos){
+	static public function mdlIngresarProducto($tablas, $datos){
 
-		$colores = $datos["colores"];
-		$tallas = $datos["tallas"];
+
 
 		$cn = Conexion::conectar();
 		
 		try {
-		
-			$cn -> beginTransaction();
-			$stmt = $cn -> prepare("INSERT INTO $tabla(id, codigo, id_categoria, id_usuario, nombre, precio_compra, precio_venta, precio_oferta, stock, descripcion, imagen, fecha) VALUES (NULL, :codigo, :id_categoria, :id_usuario, :nombre, :precio_compra, :precio_venta, :precio_oferta, :stock, :descripcion, :imagen, now())");
 			
-			$stmt->bindParam(":codigo", $datos["codigo"], PDO::PARAM_STR);
-			$stmt->bindParam(":id_categoria", $datos["id_categoria"], PDO::PARAM_INT);
-			$stmt->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+			
+			$cn -> beginTransaction();
+			//$stmt = $cn -> prepare("INSERT INTO :tabla(id, idSubCategoria, nombre, descripcion, foto) VALUES (NULL, :idSubCategoria, :nombre, :descripcion, :foto)");
+			$stmt = $cn -> prepare("INSERT INTO ".$tablas["tabla1"]."(id, idCategoria, idSubCategoria, nombre, descripcion, foto, precio_venta, oferta_venta) VALUES (NULL, ".$datos["idCategoria"].", ".$datos["idSubCategoria"].", '".$datos["nombre"]."', '".$datos["descripcion"]."', '".$datos["img"]."', '".$datos["precio"]."', '".$datos["oferta"]."')");
+			$stmt->bindParam(":tabla", $tablas["tabla1"], PDO::PARAM_STR);
+
+			$stmt->bindParam(":idSubCategoria", $datos["idSubCategoria"], PDO::PARAM_STR);
 			$stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-			$stmt->bindParam(":precio_compra", $datos["precio_compra"], PDO::PARAM_STR);
-			$stmt->bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
-			$stmt->bindParam(":precio_oferta", $datos["precio_oferta"], PDO::PARAM_STR);
-			$stmt->bindParam(":stock", $datos["stock"], PDO::PARAM_STR);
 			$stmt->bindParam(":descripcion", $datos["descripcion"], PDO::PARAM_STR);
-			$stmt->bindParam(":imagen", $datos["imagen"], PDO::PARAM_STR);
+			$stmt->bindParam(":foto", $datos["img"], PDO::PARAM_STR);
+			$stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_STR);
+			$stmt->bindParam(":oferta", $datos["oferta"], PDO::PARAM_STR);
+
 			
 			$stmt -> execute(); 
 
-			$idProducto = $cn -> lastInsertId();
+		//	$idProducto = $cn -> lastInsertId();
 
-			$stmtTallas = $cn -> prepare("INSERT INTO tallas(id, idProducto, talla)VALUES(NULL, :idProducto, :talla)");
-			$stmtTallas->bindParam(":idProducto", $idProducto, PDO::PARAM_INT);
-			for ($i=0; $i < count($tallas); $i++) { 
-				$stmtTallas->bindParam(":talla", $tallas[$i], PDO::PARAM_STR);
-				$stmtTallas -> execute();
-			}
 
-			$stmtColores = $cn -> prepare("INSERT INTO colores(id, idProducto, color)Values(NULL, :idProducto, :color)");
-			$stmtColores->bindParam(":idProducto", $idProducto, PDO::PARAM_INT);
 
-			for ($i=0; $i < count($colores); $i++) { 
-				$stmtColores->bindParam(":color", $colores[$i], PDO::PARAM_STR);
 
-				$stmtColores -> execute();
-			}
 			
 			if($cn -> commit()){
 
@@ -115,15 +130,17 @@ class ModeloProductos{
 	=============================================*/
 	static public function mdlEditarProducto($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_categoria = :id_categoria, descripcion = :descripcion, imagen = :imagen, stock = :stock, precio_compra = :precio_compra, precio_venta = :precio_venta WHERE codigo = :codigo");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET idCategoria = :idCategoria, idSubCategoria = :idSubCategoria, nombre = :nombre, descripcion = :descripcion, foto = :foto,  precio_venta = :precio_venta, oferta_venta = :oferta_venta WHERE id = :id");
 
-		$stmt->bindParam(":id_categoria", $datos["id_categoria"], PDO::PARAM_INT);
-		$stmt->bindParam(":codigo", $datos["codigo"], PDO::PARAM_STR);
+		$stmt->bindParam(":id", $datos["id"], PDO::PARAM_INT);
+		$stmt->bindParam(":idCategoria", $datos["idCategoria"], PDO::PARAM_STR);
+		$stmt->bindParam(":idSubCategoria", $datos["idSubCategoria"], PDO::PARAM_STR);
+		$stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt->bindParam(":descripcion", $datos["descripcion"], PDO::PARAM_STR);
-		$stmt->bindParam(":imagen", $datos["imagen"], PDO::PARAM_STR);
-		$stmt->bindParam(":stock", $datos["stock"], PDO::PARAM_STR);
-		$stmt->bindParam(":precio_compra", $datos["precio_compra"], PDO::PARAM_STR);
-		$stmt->bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
+		$stmt->bindParam(":foto", $datos["imagen"], PDO::PARAM_STR);
+		$stmt->bindParam(":precio_venta", $datos["precio"], PDO::PARAM_STR);
+		$stmt->bindParam(":oferta_venta", $datos["oferta"], PDO::PARAM_STR);
+
 
 		if($stmt->execute()){
 
@@ -141,24 +158,87 @@ class ModeloProductos{
 	}
 
 	/*=============================================
+	EDITAR DETALLE DE PRODUCTO
+	=============================================*/
+	static public function mdlEditarDetalleProducto($tabla , $datos){
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET idProducto = :idProducto, tamanio = :tamanio, medidas = :medidas, material = :material, color = :color, cantidad = :cantidad, precio_venta = :precio_venta WHERE id = :id");
+		//var_dump("UPDATE $tabla SET idProducto = ".$datos["idProducto"].", tamanio = '".$datos["tamanio"]."', medidas = '".$datos["medidas"]."', material = '".$datos["material"]."', color = '".$datos["color"]."', cantidad = '".$datos["cantidad"]."', precio_venta = '".$datos["precio_venta"]."' WHERE id = ".$datos["id"]);
+		$stmt->bindParam(":id", $datos["id"], PDO::PARAM_STR);
+		$stmt->bindParam(":idProducto", $datos["idProducto"], PDO::PARAM_STR);
+		$stmt->bindParam(":tamanio", $datos["tamanio"], PDO::PARAM_STR);
+		$stmt->bindParam(":medidas", $datos["medidas"], PDO::PARAM_STR);
+		$stmt->bindParam(":material", $datos["material"], PDO::PARAM_STR);
+		$stmt->bindParam(":color", $datos["color"], PDO::PARAM_STR);
+		$stmt->bindParam(":cantidad", $datos["cantidad"], PDO::PARAM_STR);
+		$stmt->bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
+
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			return "error";
+		}
+	}
+
+
+	/*=============================================
+	GUARDAR DETALLE DE PRODUCTO
+	=============================================*/
+	static public function mdlInsertDetalleProducto($tabla , $datos){
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(id, idProducto, tamanio, medidas, material, color, cantidad, precio_venta)VALUES(NULL, :idProducto, :tamanio, :medidas, :material, :color, :cantidad, :precio_venta)");
+		//var_dump("INSERT $tabla INTO(id, idProducto, tamanio, medidas, material, color, cantidad, precio_venta)VALUES(NULL, ".$datos["idProducto"].", '".$datos["tamanio"]."', '".$datos["medidas"]."', '".$datos["material"]."', '".$datos["color"]."', '".$datos["cantidad"]."', '".$datos["precio_venta"]."')");
+		$stmt->bindParam(":idProducto", $datos["idProducto"], PDO::PARAM_STR);
+		$stmt->bindParam(":tamanio", $datos["tamanio"], PDO::PARAM_STR);
+		$stmt->bindParam(":medidas", $datos["medidas"], PDO::PARAM_STR);
+		$stmt->bindParam(":material", $datos["material"], PDO::PARAM_STR);
+		$stmt->bindParam(":color", $datos["color"], PDO::PARAM_STR);
+		$stmt->bindParam(":cantidad", $datos["cantidad"], PDO::PARAM_STR);
+		$stmt->bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
+
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			return "error";
+		}
+	}
+
+	/*=============================================
 	BORRAR PRODUCTO
 	=============================================*/
 
 	static public function mdlEliminarProducto($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
+		$cn = Conexion::conectar();
+		try {
+			$cn -> beginTransaction();
 
-		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+			$stmt = $cn ->prepare("DELETE FROM $tabla WHERE id = :id");
+	
+			$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+	
+			$stmt -> execute(); 
 
-		if($stmt -> execute()){
+			$stmtp = $cn ->prepare("DELETE FROM detallesProducto WHERE idProducto = :id");
+	
+			$stmtp -> bindParam(":id", $datos, PDO::PARAM_INT);
+	
+			$stmtp -> execute(); 
 
-			return "ok";
-		
-		}else{
+			if($cn -> commit()){
 
-			return "error";	
+				return "ok";
+	
+			}else{
+	
+				return "error";
+			
+			}
 
+		} catch (\Throwable $th) {
+			$cn -> rollBack();
 		}
+
+
+
 
 		$stmt -> close();
 
@@ -193,6 +273,45 @@ class ModeloProductos{
 
 	}
 
+
+	/*=============================================
+	BORRAR DETALLE DEL PRODUCTO
+	=============================================*/
+
+	static public function mdlEliminarDetalleProducto($tabla, $datos){
+
+		$cn = Conexion::conectar();
+		try {
+			$cn -> beginTransaction();
+
+			$stmtp = $cn ->prepare("DELETE FROM $tabla WHERE id = :id");
+	
+			$stmtp -> bindParam(":id", $datos, PDO::PARAM_INT);
+	
+			$stmtp -> execute(); 
+
+			if($cn -> commit()){
+
+				return "ok";
+	
+			}else{
+	
+				return "error";
+			
+			}
+
+		} catch (\Throwable $th) {
+			$cn -> rollBack();
+		}
+
+
+
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
 
 
 }

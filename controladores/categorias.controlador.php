@@ -34,6 +34,23 @@ class Controladorcategorias{
 		return $respuesta;
 	}
 
+	static public function ctrMostrarCategoriasEditar($item, $valor){
+
+		$tabla = "categorias";
+
+		$respuesta = ModeloCategorias::MdlMostrarCategoriasEditar($tabla, $item, $valor);
+	
+		return $respuesta;
+	}
+
+	static public function ctrMostrarSubCategoriasEditar($item, $valor){
+
+		$tabla = "subCategorias";
+
+		$respuesta = ModeloCategorias::MdlMostrarCategoriasEditar($tabla, $item, $valor);
+	
+		return $respuesta;
+	}
 
     static public function ctrDeleteCategoria($datos){
 

@@ -6,7 +6,7 @@ session_start();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FerxoStyle</title>
+  <title>Innovasoft</title>
   <!-- PLUGINS DE CSS -->
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -86,7 +86,7 @@ session_start();
             echo '<script src="vistas/js/usuarios.js"></script>';
             echo '<script src="vistas/js/categorias.js"></script>';
             echo '<script src="vistas/js/clientes.js"></script>';
-            echo '<script src="vistas/js/inventario.js"></script>';
+            
             echo '<script src="vistas/js/configuracion.js"></script>';
             echo '<script src="vistas/js/pedidos.js"></script>';
             echo '<script src="vistas/js/productos.js"></script>';

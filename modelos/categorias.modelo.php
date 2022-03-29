@@ -31,6 +31,24 @@ class ModeloCategorias{
 
 	}
 
+	static public function MdlMostrarCategoriasEditar($tabla, $item, $valor){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY $item = :$item DESC");
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+			
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+
+		
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
 	static public function MdlMostrarSubCategorias($tabla, $item, $valor){
 	
 		if($item != null){

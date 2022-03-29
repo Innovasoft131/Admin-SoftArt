@@ -23,31 +23,25 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProducto" style="background: rgb(255 136 2); border: 0px solid ;"> <i class="fas fa-plus"></i> Agregar producto</button>
+
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProducto" style="background: rgb(255 136 2); border: 0px solid ;"> <i class="fas fa-plus"></i> Agregar producto</button>
 
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped dt-responsive tablaProductos" >
-                <thead>
-                  <tr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped dt-responsive tablaProductos">
+              <thead>
+                <tr>
+                  <th style="width:10px">#</th>
+                  <th>Nombre</th>
+                  <th>Subcategoria</th>
+                  <th>Imagen</th>
+                  <th>Acciones</th>
 
-                    <th style="width:10px">#</th>
-                    <th>Imagen</th>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Categoría</th>
-                    <th>Stock</th>
-                    <th>Precio de compra</th>
-                    <th>Precio de venta</th>
-                    <th>Agregado</th>
-                    <th>Acciones</th>
-
-                  </tr>
-                </thead>
-              </table>
-            </div>
+                </tr>
+              </thead>
+            </table>
+          </div>
         </div>
 
       </div>
@@ -61,10 +55,10 @@
   <!-- modal -->
 
   <!-- Modal Registro -->
-<div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <form role="form" method="post" autocomplete="off" enctype="multipart/form-data">
+  <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <form role="form" method="post" autocomplete="off" enctype="multipart/form-data">
           <div class="modal-header" style="background: rgb(255 136 2); color: white;">
             <h5 class="modal-title" id="exampleModalLabel">Agregar producto</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -82,24 +76,24 @@
                     </div>
                   </div>
                   <select class="form-control input-lg" id="nuevaCategoria" name="nuevaCategoria" required>
-                  
-                  <option value="">Selecionar categoría</option>
 
-                  <?php
+                    <option value="">Selecionar categoría</option>
 
-                  $item = null;
-                  $valor = null;
+                    <?php
 
-                  $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+                    $item = null;
+                    $valor = null;
 
-                  foreach ($categorias as $key => $value) {
-                    
-                    echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
-                  }
+                    $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
 
-                  ?>
-  
-                </select>
+                    foreach ($categorias as $key => $value) {
+
+                      echo '<option value="' . $value["id"] . '">' . $value["nombre"] . '</option>';
+                    }
+
+                    ?>
+
+                  </select>
                 </div>
               </div>
               <!-- ENTRADA PARA SELECCIONAR SUBCATEGORÍA -->
@@ -111,12 +105,12 @@
                     </div>
                   </div>
                   <select class="form-control input-lg" id="nuevaSubCategoriaP" name="nuevaSubCategoriaP" required>
-                  
-                  <option value="">Selecciona subcategoría</option>
+
+                    <option value="">Selecciona subcategoría</option>
 
 
-  
-                </select>
+
+                  </select>
                 </div>
               </div>
 
@@ -130,11 +124,36 @@
                     </div>
                   </div>
                   <input type="text" class="form-control input-lg" name="nuevaNombre" id="nuevaNombre" placeholder="Ingresar Nombre" required>
-                  
+
                 </div>
               </div>
 
-            <!-- Entrada de tamaños -->
+              <!-- ENTRADA PARA LA PRECIO -->
+              <div class="form-group ">
+                <div class="input-group autocompletar">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fas fa-arrow-up"></span>
+                    </div>
+                  </div>
+                  <input type="number" class="form-control input-lg" name="nuevoPrecio" id="nuevoPrecio" placeholder="Ingresar Precio" min="1" required>
+
+                </div>
+              </div>
+              <!-- ENTRADA PARA LA OFERTA -->
+              <div class="form-group ">
+                <div class="input-group autocompletar">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fas fa-arrow-down"></span>
+                    </div>
+                  </div>
+                  <input type="number" class="form-control input-lg" name="nuevoOferta" id="nuevoOferta" placeholder="Ingresar Oferta" min="1" required>
+
+                </div>
+              </div>
+              <!-- Entrada de tamaños -->
+              <!-- 
             <div class="form-group">
                 <div class="input-group ">
 
@@ -145,7 +164,9 @@
                 </div>
               </div>
 
-            <!-- Entrada de talla -->
+            --->
+              <!-- Entrada de talla -->
+              <!--
             <div class="form-group">
                 <div class="input-group">
 
@@ -155,6 +176,7 @@
                   
                 </div>
               </div>
+
               <div class="form-group">
                 <div class="input-group">
                   <label for="nuevoColor" id= "lbColor">
@@ -169,8 +191,9 @@
                   </button>
                 </div>
               </div>
-
+              -->
               <!-- entrada de tallas -->
+              <!--
               <div class="form-group">
               <div class="input-group">
                 <div class="table-responsive">
@@ -194,18 +217,18 @@
               </div>
             </div>
 
-
+             -->
               <!-- entrada para la descripción -->
-             <div class="form-group ">
+              <div class="form-group ">
                 <div class="input-group autocompletar">
-                  
-                    <textarea class="form-control" id="summernote">
+
+                  <textarea class="form-control" id="summernote">
                       Descripción
                     </textarea>
 
-                  
+
                 </div>
-              </div> 
+              </div>
 
               <!-- subir foto -->
               <div class="form-group col-12">
@@ -213,41 +236,56 @@
                 <input type="file" class="nuevaImagen col-12" name="nuevaImagenI" id="nuevaImagenI">
                 <p class="help-block">Peso máximo de la foto 6 MB</p>
                 <img src="vistas/img/usuarios/default/1.jpg" class="img-thumbnail previsualizar" id="imagen" width="100px">
-                
-              </div> 
+
+              </div>
 
 
             </div>
 
-            
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary" style="background: rgb(255 136 2); border: 0px solid ;">Guardar</button>
+            <button type="button" class="btn btn-primary btnGuardarProducto" style="background: rgb(255 136 2); border: 0px solid ;">Guardar</button>
           </div>
-          <?php
-            $crearProducto = new ControladorProductos();
-            $crearProducto -> ctrCrearProducto();
-          ?>
+
         </form>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- Modal Edicion -->
   <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form role="form" method="post" autocomplete="off"  enctype="multipart/form-data">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <form role="form" method="post" autocomplete="off" enctype="multipart/form-data">
           <div class="modal-header" style="background: rgb(255 136 2); color: white;">
-            <h5 class="modal-title" id="exampleModalLabel">Agregar producto</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="card-body">
+
+
               <!-- ENTRADA PARA SELECCIONAR CATEGORÍA -->
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fa fa-spray-can"></span>
+                    </div>
+                  </div>
+                  <input type="hidden" name="txtproducto" id="txtproducto">
+                  <select class="form-control input-lg" id="editarCategoria" name="editarCategoria" required>
+
+                    <option value="">Selecionar categoría</option>
+
+                  </select>
+                </div>
+              </div>
+              <!-- ENTRADA PARA SELECCIONAR SUBCATEGORÍA -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
@@ -255,25 +293,16 @@
                       <span class="fa fa-th"></span>
                     </div>
                   </div>
-                  <select class="form-control input-lg"  name="editarCategoria" readonly required>
-                  
-                  <option id="editarCategoria"></option>
+                  <select class="form-control input-lg" id="editSubCategoriaP" name="editSubCategoriaP" required>
 
-                </select>
+                    <option value="">Selecciona subcategoría</option>
+
+
+
+                  </select>
                 </div>
               </div>
-            <!-- ENTRADA PARA EL CÓDIGO -->
-              <div class="form-group ">
-                <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fas fa-code"></span>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control input-lg" id="editarCodigo" name="editarCodigo" readonly required>
-                  
-                </div>
-              </div>
+
 
               <!-- ENTRADA PARA LA DESCRIPCIÓN -->
               <div class="form-group ">
@@ -283,91 +312,66 @@
                       <span class="fas fa-keyboard"></span>
                     </div>
                   </div>
-                  <input type="text" class="form-control input-lg" id="editarDescripcion" name="editarDescripcion" required>
-                  
+                  <input type="text" class="form-control input-lg" name="editarNombreProductoDetalle" id="editarNombreProductoDetalle" placeholder="Ingresar Nombre" required>
+
                 </div>
               </div>
 
-              <!-- ENTRADA PARA STOCK -->
+
+              <!-- ENTRADA PARA LA PRECIO -->
               <div class="form-group ">
                 <div class="input-group autocompletar">
                   <div class="input-group-append">
                     <div class="input-group-text">
-                      <span class="fa fa-check"></span>
+                      <span class="fas fa-arrow-up"></span>
                     </div>
                   </div>
-                  <input type="number" class="form-control input-lg" id="editarStock" name="editarStock" min="0" required>
-                  
-                </div>
-              </div>              
+                  <input type="number" class="form-control input-lg" name="editarPrecio" id="editarPrecio" placeholder="Ingresar Precio" min="1" required>
 
-              <!-- ENTRADA PARA PRECIO COMPRA -->
+                </div>
+              </div>
+              <!-- ENTRADA PARA LA OFERTA -->
               <div class="form-group ">
                 <div class="input-group autocompletar">
                   <div class="input-group-append">
                     <div class="input-group-text">
-                      <span class="fa fa-arrow-up"></span>
+                      <span class="fas fa-arrow-down"></span>
                     </div>
                   </div>
-                  <input type="number" class="form-control input-lg" id="editarPrecioCompra" name="editarPrecioCompra" step="any" min="0" required>
-                  
-                </div>
-              </div>    
+                  <input type="number" class="form-control input-lg" name="editarOferta" id="editarOferta" placeholder="Ingresar Oferta" min="1" required>
 
-             <!-- ENTRADA PARA PRECIO VENTA -->
+                </div>
+              </div>
+
+
+              <!-- entrada para la descripción -->
               <div class="form-group ">
                 <div class="input-group autocompletar">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-arrow-down"></span>
-                    </div>
-                  </div>
-                  <input type="number" class="form-control input-lg" id="editarPrecioVenta" name="editarPrecioVenta" step="any" min="0" readonly required>
-                  
+
+                  <textarea class="form-control" id="summernoteEditar" name="summernoteEditar">
+
+                    </textarea>
+
+
                 </div>
-              </div>                
-
-             <!-- CHECKBOX PARA PORCENTAJE -->
-             <div class="form-group col-xs-6">
-                <div class="input-group autocompletar">
-                  <label>
-                        
-                        <input type="checkbox" class="minimal porcentaje" checked>
-                        Utilizar procentaje
-                      </label>
-                  
-                </div>
-              </div>  
-
-             <!-- ENTRADA PARA PORCENTAJE -->
-             <div class="form-group col-xs-6">
-                <div class="input-group autocompletar">
-                <input type="number" class="form-control input-lg nuevoPorcentaje" min="0" value="40" required>
-
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="fa fa-percent"></span>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div> 
-
-
+              </div>
 
               <!-- subir foto -->
-              <div class="form-group">
+              <div class="form-group col-12">
                 <div class="panel">Subir</div>
-                <input type="file" class="nuevaImagen" name="editarImagen" id="editarImagen">
+                <input type="file" class="nuevaImagen col-12" name="editarImagenI" id="editarImagenI">
                 <p class="help-block">Peso máximo de la foto 6 MB</p>
                 <img src="vistas/img/usuarios/default/1.jpg" class="img-thumbnail previsualizar" id="imagen" width="100px">
-                <input type="hidden" name="fotoActual" id="fotoActual">
-              </div> 
+                <input type="hidden" name="fotoActualProducto" id="fotoActualProducto">
+
+              </div>
+
+
 
 
             </div>
 
-            
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -375,17 +379,17 @@
           </div>
           <?php
           $editarProducto = new ControladorProductos();
-          $editarProducto -> ctrEditarProducto();
+          $editarProducto->ctrEditarProducto();
           ?>
         </form>
+      </div>
     </div>
   </div>
-</div>
 
 
-<?php
- 
- $eliminarProducto = new ControladorProductos();
- $eliminarProducto -> ctrEliminarProducto();
+  <?php
 
- ?>
+  $eliminarProducto = new ControladorProductos();
+  $eliminarProducto->ctrEliminarProducto();
+
+  ?>

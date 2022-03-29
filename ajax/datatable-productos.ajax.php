@@ -19,7 +19,7 @@ class TablaProductos{
     	$valor = null;
 
   		$productos = ControladorProductos::ctrMostrarProductos($item, $valor);
-		
+
   		if(count($productos) == 0){
 
   			echo '{"data": []}';
@@ -36,51 +36,29 @@ class TablaProductos{
  	 		TRAEMOS LA IMAGEN
   			=============================================*/ 
 
-		  	$imagen = "<img src='".$productos[$i]["imagen"]."' width='40px'>";
+		  	$imagen = "<img src='".$productos[$i]["foto"]."' width='40px'>";
 
 		  	/*=============================================
  	 		TRAEMOS LA CATEGORÍA
   			=============================================*/ 
 
 		  	$item = "id";
-		  	$valor = $productos[$i]["id_categoria"];
+		  	$valor = $productos[$i]["idSubCategoria"];
 
-		  	$categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+		  	$categorias = ControladorCategorias::ctrMostrarSubCategorias($item, $valor);
 
-		  	/*=============================================
- 	 		STOCK
-  			=============================================*/ 
-
-  			if($productos[$i]["stock"] <= 10){
-
-  				$stock = "<button class='btn btn-danger'>".$productos[$i]["stock"]."</button>";
-
-  			}else if($productos[$i]["stock"] > 11 && $productos[$i]["stock"] <= 15){
-
-  				$stock = "<button class='btn btn-warning'>".$productos[$i]["stock"]."</button>";
-
-  			}else{
-
-  				$stock = "<button class='btn btn-success'>".$productos[$i]["stock"]."</button>";
-
-  			}
-
+		
 		  	/*=============================================
  	 		TRAEMOS LAS ACCIONES
   			=============================================*/ 
 
-		  	$botones =  "<div class='btn-group'><button class='btn btn-warning btnEditarProducto' style='background: rgb(255 136 2); border: 0px solid ;'  idProducto='".$productos[$i]["id"]."' data-toggle='modal' data-target='#modalEditarProducto'><i class='fa fa-pen'></i></button><button class='btn btn-danger btnEliminarProducto' idProducto='".$productos[$i]["id"]."' codigo='".$productos[$i]["codigo"]."' imagen='".$productos[$i]["imagen"]."'><i class='fa fa-times'></i></button></div>"; 
+		  	$botones =  "<div class='btn-group'><button class='btn btn-warning btnEditarProducto' style='background: rgb(255 136 2); border: 0px solid ;'  idProducto='".$productos[$i]["id"]."' data-toggle='modal' data-target='#modalEditarProducto'><i class='fa fa-pen'></i></button><button class='btn btn-danger btnEliminarProducto' idProducto='".$productos[$i]["id"]."' imagen='".$productos[$i]["foto"]."'><i class='fa fa-times'></i></button></div>"; 
 
 		  	$datosJson .='[
-			      "'.($i+1).'",
-			      "'.$imagen.'",
-			      "'.$productos[$i]["codigo"].'",
+				  "'.$productos[$i]["id"].'",
 			      "'.$productos[$i]["nombre"].'",
-			      "'.$categorias["nombre"].'",
-			      "'.$stock.'",
-			      "'.$productos[$i]["precio_compra"].'",
-			      "'.$productos[$i]["precio_venta"].'",
-			      "'.$productos[$i]["fecha"].'",
+				  "'.$categorias[0]["nombre"].'",
+				  "'.$imagen.'",
 			      "'.$botones.'"
 			    ],';
 

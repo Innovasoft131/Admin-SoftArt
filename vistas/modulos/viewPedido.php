@@ -60,8 +60,7 @@
                         <p class="col-sm-3"><?php echo $mostrarPedidoCliente["correo"]; ?></p> &nbsp;&nbsp;&nbsp;&nbsp;
                       
                       
-                        <strong>Numero de Telefono:</strong> &nbsp; &nbsp;
-                        <p><?php echo $mostrarPedidoCliente["telefono"]; ?></p>
+                        
                 
                         
                       </div>
@@ -72,10 +71,8 @@
                       <thead>
                         <tr>
                           <th style="width:10px">#</th>
-                          <th>Categoria</th>
-                          <th>Modelo</th>
-                          <th>Talla</th>
-                          <th>Genero</th>
+                          <th>SubCategoria</th>
+                          <th>Producto</th>
                           <th>Precio</th>
                           <th>Cantidad</th>
                           <th>Foto</th>
@@ -88,17 +85,14 @@
                         foreach ($pedidos as $key => $value){
                           $item = 'id';
                           $valor = $value["id"];
-                          $tallas = ControladorPedidos::ctrMostrarPedidoTalla($item, $valor);
+
                           echo ' <tr>
                                   <td>'.$key.'</td>
-                                  <td>'.$value["categoria"].'</td>
-                                  <td>'.$value["modelo"].'</td>';
-                          
-                                    echo '<td>'.$tallas["tallas"].'</td>';
+                                  <td>'.$value["subCategoria"].'</td>
+                                  <td>'.$value["producto"].'</td>
+                                  <td>'.$value["precio"].'</td>';
                                   
-                          echo   '<td>'.$value["genero"].'</td>
-                                  <td>'.$value["precio"].'</td>
-                                  <td>'.$value["cantidad"].'</td>
+                          echo   '<td>'.$value["cantidad"].'</td>
                                   <td><img src="'.$value["foto"].'" class="img-thumbnail" width="50px"></td>
                                 </tr>';
                         }
@@ -116,7 +110,7 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Total del pedido</label>
-                        <p>$<?php echo $mostrarPedido["total"]; ?></p>
+                        <p>$<?php echo $mostrarPedido["total"]; ?>.00</p>
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -124,7 +118,7 @@
                         <label>Estado</label>
                         <input type="hidden" name="pedido" id="pedido" value="<?php echo $_GET["pedido"]; ?>">
                         <select class="form-control" name="slEstado" id="slEstado">
-                          <option value="pendiente"><?php echo $mostrarPedido["estado"]; ?></option>
+                          <option value="<?php echo $mostrarPedido["estado"]; ?>"><?php echo $mostrarPedido["estado"]; ?></option>
                           <option value="pendiente">pendiente</option>
                           <option value="visto">visto</option>
                           <option value="entregar">entregar</option>

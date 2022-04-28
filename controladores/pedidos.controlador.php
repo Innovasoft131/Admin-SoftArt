@@ -36,9 +36,9 @@ class ControladorPedidos{
 
     /* mostrar las tallas del pedido con rescricciones */
 
-    public static function ctrMostrarPedidoTalla($item, $valor){
+    public static function ctrMostrarSubCategoria($item, $valor){
 
-        $tabla = "pedidosDesglose";
+        $tabla = "subCategorias";
 
         $respuesta = ModeloPedidos::MdlMostrarPedido($tabla, $item, $valor);
 

@@ -8,7 +8,7 @@ class ModeloPedidos{
 	static public function MdlMostrarPedidos(){
 	
 
-		$stmt = Conexion::conectar()->prepare("select p.id, p.idCliente, p.fechaPedido, p.estado, c.usuario, c.nombre from pedidos p join clientes c on p.idCliente = c.id order by p.id desc");
+		$stmt = Conexion::conectar()->prepare("select p.id, p.idCliente, p.fechaPedido, p.estado, p.estadoCompra, p.correoPaypal, p.total,  c.usuario, c.nombre, c.correo from pedidos p join clientes c on p.idCliente = c.id order by p.id desc");
 
 
 		$stmt -> execute();
@@ -31,7 +31,7 @@ class ModeloPedidos{
 	static public function MdlMostrarPedidoId($pedido){
 	
 
-		$stmt = Conexion::conectar()->prepare("SELECT pd.id, c.nombre AS categoria, pr.nombre AS modelo, pr.genero, pd.precio, pd.cantidad, pr.foto FROM pedidos p JOIN pedidosDesglose pd ON p.id = pd.idPedido JOIN  productos pr ON pr.id = pd.idProducto JOIN categorias c ON c.id = pr.idCategoria WHERE p.id = :pedido");
+		$stmt = Conexion::conectar()->prepare("SELECT dp.*, pr.foto, sbc.nombre as subCategoria FROM desglosePedidos dp JOIN pedidos p on p.id = dp.idPedido JOIN productos pr on pr.id = dp.idProducto JOIN subCategorias sbc on sbc.id = pr.idSubCategoria WHERE dp.id = :pedido");
 
 		$stmt -> bindParam(":pedido", $pedido, PDO::PARAM_STR);
 

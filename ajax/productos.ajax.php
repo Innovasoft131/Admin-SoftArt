@@ -165,6 +165,22 @@ class AjaxProductos{
 
   }
 
+  
+  /*=============================================
+	VALIDAR NO REPETIR PRODUCTO
+	=============================================*/	
+  public $validarProducto;
+	public function ajaxValidarProducto(){
+
+		$item = "nombre";
+		$valor = $this->validarProducto;
+
+		$respuesta = ControladorProductos::ctrMostrarProductos($item, $valor);
+
+		echo json_encode($respuesta);
+
+	}
+
 }
 
 
@@ -288,6 +304,14 @@ if(isset($_POST["eliminarDetalleProductos"])){
   $eliminarDetalleProducto = new AjaxProductos();
   $eliminarDetalleProducto -> id = $_POST['idEliminar'];
   $eliminarDetalleProducto -> ajaxEliminarDetalleProductos();
+}
+/*=============================================
+VALIDAR NO REPETIR PRODUCTO
+=============================================*/
+if(isset($_POST["validarProducto"])){
+  $valProducto = new AjaxProductos();
+	$valProducto -> validarProducto = $_POST["validarProducto"];
+	$valProducto -> ajaxValidarProducto();
 }
 
 

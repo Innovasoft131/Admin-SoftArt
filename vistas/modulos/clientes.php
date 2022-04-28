@@ -23,59 +23,66 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          
-        <button class="btn btn-primary" data-toggle="modal" data-target="#agregarClientes"> <i class="fas fa-plus"></i> Agregar Clientes </button>
+
+          <!-- button class="btn btn-primary" data-toggle="modal" data-target="#agregarClientes"> <i class="fas fa-plus"></i> Agregar Clientes </button -->
 
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-              <table class="table  table-bordered table-striped   tablas " >
-                <thead>
-                  <tr>
+          <div class="table-responsive">
+            <table class="table  table-bordered table-striped   tablas ">
+              <thead>
+                <tr>
                   <th style="width:10px">#</th>
                   <th>Usuario</th>
                   <th>Correo</th>
+                  <th>Verificación</th>
                   <th>Acciones</th>
 
-                  </tr>
-                </thead>
-                <tbody>
+                </tr>
+              </thead>
+              <tbody>
                 <?php
 
-$item = null;
-$valor = null;
+                $item = null;
+                $valor = null;
 
-$clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
+                $clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
 
-foreach ($clientes as $key => $value){
- 
-  echo ' <tr>
-          <td>'.$key.'</td>
-          <td>'.$value["usuario"].'</td>';
+                foreach ($clientes as $key => $value) {
 
+                  echo ' <tr>
+          <td>' . $key . '</td>
+          <td>' . $value["usuario"] . '</td>
+          <td>' . $value["correo"] . '</td>';
 
+                  if ($value["verificacion"] == 0) {
 
-          echo '<td>'.$value["correo"].'</td>
+                    echo '<td><button class="btn btn-success btn-xs ">Verificado</button></td>';
+                  } else {
+
+                    echo '<td><button class="btn btn-danger btn-xs">No verificado</button></td>';
+                  }
+
+                  echo '
           <td>
 
             <div class="btn-group">
                 
-              <button class="btn btn-warning btnEditarClientes" idCliente="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarCliente"><i class="fas fa-pen"></i></button>
 
-              <button class="btn btn-danger btnEliminarClientes" idCliente="'.$value["id"].'"  cliente="'.$value["usuario"].'"><i class="fa fa-times"></i></button>
+              <button class="btn btn-danger btnEliminarClientes" idCliente="' . $value["id"] . '"  cliente="' . $value["usuario"] . '"><i class="fa fa-times"></i></button>
 
             </div>  
 
           </td>
 
         </tr>';
-}
+                }
 
 
-?> 
-                </tbody>
-              </table>
-            </div>
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>
@@ -89,10 +96,10 @@ foreach ($clientes as $key => $value){
   <!-- modal -->
 
   <!-- Modal Registro -->
-<div class="modal fade" id="agregarClientes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form role="form" method="post" enctype="multipart/form-data" autocomplete="off">
+  <div class="modal fade" id="agregarClientes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form role="form" method="post" enctype="multipart/form-data" autocomplete="off">
           <div class="modal-header" style="background: #007bff; color: white;">
             <h5 class="modal-title" id="exampleModalLabel">Agregar Clientes</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -101,7 +108,7 @@ foreach ($clientes as $key => $value){
           </div>
           <div class="modal-body">
             <div class="card-body">
-            <!-- Entrada de Usuario -->
+              <!-- Entrada de Usuario -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
@@ -112,7 +119,7 @@ foreach ($clientes as $key => $value){
                   <input type="text" class="form-control" name="nuevoUsuario" id="nuevoCliente" placeholder="Usuario*" require>
                 </div>
               </div>
-            <!-- Entrada de Contraseña -->
+              <!-- Entrada de Contraseña -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
@@ -124,8 +131,8 @@ foreach ($clientes as $key => $value){
                 </div>
               </div>
 
-            <!-- Entrada de Correo -->
-            <div class="form-group">
+              <!-- Entrada de Correo -->
+              <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
                     <div class="input-group-text">
@@ -134,37 +141,37 @@ foreach ($clientes as $key => $value){
                   </div>
                   <input type="email" class="form-control" name="nuevoCorreo" placeholder="Correo*" require>
                 </div>
+              </div>
+
+
+
+
+
             </div>
 
 
-
-
-           
-            </div>
-
-            
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
           <?php
-            
-            $crearCliente = new ControladorClientes();
-            $crearCliente -> ctrCrearClientes();
-            
+
+          $crearCliente = new ControladorClientes();
+          $crearCliente->ctrCrearClientes();
+
 
           ?>
         </form>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- Modal Edicion -->
   <div class="modal fade" id="modalEditarCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form role="form" method="post" enctype="multipart/form-data" autocomplete="off">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form role="form" method="post" enctype="multipart/form-data" autocomplete="off">
           <div class="modal-header" style="background:#3c8dbc; color:white">
             <h5 class="modal-title" id="exampleModalLabel">Editar Clientes</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -174,7 +181,7 @@ foreach ($clientes as $key => $value){
           <div class="modal-body">
             <div class="card-body">
 
-            <!-- Entrada de Usuario -->
+              <!-- Entrada de Usuario -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
@@ -185,7 +192,7 @@ foreach ($clientes as $key => $value){
                   <input type="text" class="form-control" name="editarUsuario" id="editarUsuario" placeholder="Usuario*" readonly>
                 </div>
               </div>
-            <!-- Entrada de Contraseña -->
+              <!-- Entrada de Contraseña -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
@@ -199,8 +206,8 @@ foreach ($clientes as $key => $value){
               </div>
 
 
-            <!-- Entrada de Correo -->
-            <div class="form-group">
+              <!-- Entrada de Correo -->
+              <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-append">
                     <div class="input-group-text">
@@ -209,37 +216,37 @@ foreach ($clientes as $key => $value){
                   </div>
                   <input type="email" class="form-control" name="editarCorreo" id="editarCorreo" placeholder="Correo*" require>
                 </div>
+              </div>
+
+
+
+
+
+
             </div>
 
 
-
-
-
-              
-            </div>
-
-            
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
           <?php
-        
-          $editarCliente = new ControladorClientes();
-          $editarCliente -> ctrEditarCliente();
 
-        ?> 
+          $editarCliente = new ControladorClientes();
+          $editarCliente->ctrEditarCliente();
+
+          ?>
 
         </form>
+      </div>
     </div>
   </div>
-</div>
 
-<?php
+  <?php
 
   $borrarCliente = new ControladorClientes();
-  $borrarCliente -> ctrBorrarCliente();
-  
+  $borrarCliente->ctrBorrarCliente();
 
-?> 
+
+  ?>

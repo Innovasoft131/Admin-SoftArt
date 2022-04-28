@@ -1,7 +1,7 @@
 <?php
 
     $pedidos = ControladorPedidos::ctrSumaPedidos();
-  //  $totalPedidos = $pedidos[0]["totalPedidos"];
+    $totalPedidos = $pedidos[0]["totalPedidos"];
     $item = null; 
     $valor = null;
     $usuarios = ControladorUsuarios::ctrMostrarUsuarios($item, $valor);
@@ -12,7 +12,7 @@
     $clientes = ControladorClientes::ctrMostrarclientes($item, $valor);
     $totalClientes = count($clientes);
 
-    $piezas = ControladorInventarios::ctrMostrarProductos($item, $valor);
+    $piezas = ControladorProductos::ctrMostrarProductos($item, $valor);
     $totalPiezas = count($piezas);
 ?>
 
@@ -27,7 +27,7 @@
         <div class="icon">
             <i class="fas fa-tshirt"></i>
         </div>
-        <a href="inventario" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="productos" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
 <!-- ./col -->
@@ -35,7 +35,7 @@
     <!-- small box -->
     <div class="small-box bg-success">
         <div class="inner">
-            <h3><?php echo number_format(0); ?></h3>
+            <h3><?php echo number_format($totalPedidos); ?></h3>
             <p>Pedidos Pendientes</p>
         </div>
         <div class="icon">
@@ -49,9 +49,26 @@
     <!-- small box -->
     <div class="small-box bg-secondary">
         <div class="inner">
-            <h3><?php echo number_format($totalEmpleados); ?></h3>
+            <h3><?php echo number_format($totalClientes); ?></h3>
 
             <p>Clientes Registrados</p>
+        </div>
+        <div class="icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <a href="clientes" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
+
+<!-- ./col -->
+<!-- ./col -->
+<div class="col-lg-3 col-6">
+    <!-- small box -->
+    <div class="small-box bg-danger">
+        <div class="inner">
+            <h3><?php echo number_format($totalEmpleados); ?></h3>
+
+            <p>Clientes Empleados</p>
         </div>
         <div class="icon">
             <i class="fas fa-users"></i>
